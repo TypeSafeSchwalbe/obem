@@ -1,0 +1,19 @@
+
+type Mesh = { mesh = int }
+proc obem::internal::gfx::internal_create_mesh([float], [int]) -> Mesh = obem_create_mesh
+
+type Shader = { shader = int }
+proc obem::internal::gfx::internal_create_shader(str, str) -> Shader = obem_create_shader
+
+type Texture = { texture = int }
+proc obem::internal::gfx::internal_create_texture(int, int) -> Texture = obem_create_texture
+
+type Surface = { surface = int }
+proc obem::internal::gfx::internal_main_surface() -> Surface = obem_main_surface
+proc obem::internal::gfx::internal_create_surface(Texture) -> Surface = obem_create_surface
+proc obem::internal::gfx::internal_surface_width(Surface) -> int = obem_surface_width
+proc obem::internal::gfx::internal_surface_height(Surface) -> int = obem_surface_height
+proc obem::internal::gfx::internal_clear_color(Surface, float, float, float, float) = obem_clear_color
+proc obem::internal::gfx::internal_clear_depth(Surface, float) = obem_clear_depth
+
+proc obem::internal::gfx::internal_render(Mesh, [int], Shader, bool, Surface) = obem_render

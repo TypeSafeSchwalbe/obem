@@ -1,0 +1,5 @@
+
+proc obem::internal::internal_on_init(|| -> unit) = obem_on_init
+proc obem::internal::internal_on_frame(|| -> unit) = obem_on_frame
+
+proc obem::delta_time() -> float = obem_delta_time

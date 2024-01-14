@@ -1,0 +1,12 @@
+
+mod obem
+
+use obem::internal::*
+
+pub proc on_init(init_callback) {
+    internal_on_init(init_callback)
+}
+
+pub proc on_frame(frame_callback) {
+    internal_on_frame(frame_callback)
+}

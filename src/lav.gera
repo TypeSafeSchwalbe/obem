@@ -1,0 +1,65 @@
+
+mod obem::lav
+
+use std::(math, iter, arr)
+
+pub proc add(a, b) {
+    var r = array(0.0, math::min(length(a), length(b)))
+    0..length(r) |> iter::for_each(|i| {
+        r[i] = a[i] + b[i]
+    })
+    return r
+}
+
+pub proc sub(a, b) {
+    var r = array(0.0, math::min(length(a), length(b)))
+    0..length(r) |> iter::for_each(|i| {
+        r[i] = a[i] - b[i]
+    })
+    return r
+}
+
+pub proc mul(a, b) {
+    var r = array(0.0, math::min(length(a), length(b)))
+    0..length(r) |> iter::for_each(|i| {
+        r[i] = a[i] * b[i]
+    })
+    return r
+}
+
+pub proc div(a, b) {
+    var r = array(0.0, math::min(length(a), length(b)))
+    0..length(r) |> iter::for_each(|i| {
+        r[i] = a[i] / b[i]
+    })
+    return r
+}
+
+pub proc neg(v) {
+    var r = array(0.0, length(v))
+    0..length(r) |> iter::for_each(|i| {
+        r[i] = -v[i]
+    })
+    return r
+}
+
+pub proc len(v) {
+    return v
+        |> arr::iter()
+        |> iter::reduce(|s, n| s + math::pow(n, 2.0), 0.0)
+        |> math::sqrt()
+}
+
+pub proc dot(a, b) {
+    return 0..math::min(length(a), length(b))
+        |> iter::map(|i| a[i] + b[i])
+        |> iter::reduce(|s, n| s + n, 0.0)
+}
+
+pub proc cross(a, b) {
+    return [
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0]
+    ]
+}

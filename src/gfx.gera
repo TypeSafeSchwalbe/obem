@@ -1,0 +1,54 @@
+
+mod obem::gfx
+
+use obem::internal::gfx::*
+
+pub proc Mesh(data, indices) { return {
+    handle = internal_create_mesh(data, indices)
+} }
+
+pub proc Shader(vertex_src, fragment_src) { return {
+    handle = internal_create_shader(vertex_src, fragment_src)
+} }
+
+pub proc Texture(width, height) {
+    case width < 0 || height < 0 -> panic("Invalid texture dimensions!")
+    return {
+        handle = internal_create_texture(width, height),
+
+        width = |self| width,
+        height = |self| height
+    }
+}
+
+proc create_surface(handle) { return {
+    handle = handle,
+
+    width = |self| internal_surface_width(self.handle),
+    height = |self| internal_surface_height(self.handle),
+
+    clear_color = |self, r, g, b, a| {
+        internal_clear_color(self.handle, r, g, b, a)
+        return self
+    },
+
+    clear_depth = |self, d| {
+        internal_clear_depth(self.handle, d)
+        return self
+    }
+} }
+
+pub proc main_surface() {
+    return create_surface(internal_main_surface())
+}
+
+pub proc Surface(texture) {
+    return create_surface(internal_create_surface(texture))
+}
+
+pub proc render(mesh, vertex_property_sizes, shader, depth_test, surface) {
+    internal_render(
+        mesh.handle, vertex_property_sizes, shader.handle, depth_test,
+        surface.handle
+    )
+}
