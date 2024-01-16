@@ -1,4 +1,312 @@
 
 mod obem::lam
 
-// TODO!
+use std::arr
+
+pub proc new2x2(
+    m00, m01,
+    m10, m11
+) { return [
+    [m00, m01],
+    [m10, m11]
+] }
+
+pub proc new3x2(
+    m00, m01, m02,
+    m10, m11, m12
+) { return [
+    [m00, m01, m02],
+    [m10, m11, m12]
+] }
+
+pub proc new4x2(
+    m00, m01, m02, m03,
+    m10, m11, m12, m13
+) { return [
+    [m00, m01, m02, m03],
+    [m10, m11, m12, m13]
+] }
+
+pub proc new2x3(
+    m00, m01,
+    m10, m11,
+    m20, m21
+) { return [
+    [m00, m01],
+    [m10, m11],
+    [m20, m21]
+] }
+
+pub proc new3x3(
+    m00, m01, m02,
+    m10, m11, m12,
+    m20, m21, m22
+) { return [
+    [m00, m01, m02],
+    [m10, m11, m12],
+    [m20, m21, m22]
+] }
+
+pub proc new4x3(
+    m00, m01, m02, m03,
+    m10, m11, m12, m13,
+    m20, m21, m22, m23
+) { return [
+    [m00, m01, m02, m03],
+    [m10, m11, m12, m13],
+    [m20, m21, m22, m23]
+] }
+pub proc new2x4(
+    m00, m01,
+    m10, m11,
+    m20, m21,
+    m30, m31
+) { return [
+    [m00, m01],
+    [m10, m11],
+    [m20, m21],
+    [m30, m31]
+] }
+
+pub proc new3x4(
+    m00, m01, m02,
+    m10, m11, m12,
+    m20, m21, m22,
+    m30, m31, m32
+) { return [
+    [m00, m01, m02],
+    [m10, m11, m12],
+    [m20, m21, m22],
+    [m30, m31, m32]
+] }
+
+pub proc new4x4(
+    m00, m01, m02, m03,
+    m10, m11, m12, m13,
+    m20, m21, m22, m23,
+    m30, m31, m32, m33
+) { return [
+    [m00, m01, m02, m03],
+    [m10, m11, m12, m13],
+    [m20, m21, m22, m23],
+    [m30, m31, m32, m33]
+] }
+
+pub proc iden2x2() { return [
+    [1.0, 0.0],
+    [0.0, 1.0]
+] }
+
+pub proc iden3x3() { return [
+    [1.0, 0.0, 0.0],
+    [0.0, 1.0, 0.0],
+    [0.0, 0.0, 1.0]
+] }
+
+pub proc iden4x4() { return [
+    [1.0, 0.0, 0.0, 0.0],
+    [0.0, 1.0, 0.0, 0.0],
+    [0.0, 0.0, 1.0, 0.0],
+    [0.0, 0.0, 0.0, 1.0]
+] }
+
+pub proc row(m, row) {
+    return m[row] |> arr::clone()
+}
+
+pub proc row_column(m, row, column) {
+    return m[row][column]
+}
+
+pub proc m00(m) { return m[0][0] }
+pub proc m01(m) { return m[0][1] }
+pub proc m02(m) { return m[0][2] }
+pub proc m03(m) { return m[0][3] }
+pub proc m10(m) { return m[1][0] }
+pub proc m11(m) { return m[1][1] }
+pub proc m12(m) { return m[1][2] }
+pub proc m13(m) { return m[1][3] }
+pub proc m20(m) { return m[2][0] }
+pub proc m21(m) { return m[2][1] }
+pub proc m22(m) { return m[2][2] }
+pub proc m23(m) { return m[2][3] }
+pub proc m30(m) { return m[3][0] }
+pub proc m31(m) { return m[3][1] }
+pub proc m32(m) { return m[3][2] }
+pub proc m33(m) { return m[3][3] }
+
+pub proc add(a, b) {
+    // TODO!
+}
+
+pub proc sub(a, b) {
+    // TODO!
+}
+
+pub proc mul(a, b) {
+    // TODO!
+}
+
+pub proc div(a, b) {
+    // TODO!
+}
+
+pub proc neg(m) {
+    // TODO!
+}
+
+pub proc apply(m, v) {
+    // TODO!
+}
+
+pub proc scale(m, x, y, z) {
+    // // TODO!
+    // public static Mat4 scale(Mat4 mat, float x, float y, float z) {
+    //     mat.m00 = mat.m00 * x;
+    //     mat.m01 = mat.m01 * x;
+    //     mat.m02 = mat.m02 * x;
+    //     mat.m03 = mat.m03 * x;
+    //     mat.m10 = mat.m10 * y;
+    //     mat.m11 = mat.m11 * y;
+    //     mat.m12 = mat.m12 * y;
+    //     mat.m13 = mat.m13 * y;
+    //     mat.m20 = mat.m20 * z;
+    //     mat.m21 = mat.m21 * z;
+    //     mat.m22 = mat.m22 * z;
+    //     mat.m23 = mat.m23 * z;
+    //     return mat;
+    // }
+}
+
+pub proc rotate(m, x, y, z) {
+    // // TODO!
+    // public static Mat4 rotate(Mat4 mat, float x, float y, float z) {
+    //     float sinX = (float) Math.sin(x);
+    //     float cosX = (float) Math.cos(x);
+    //     float sinY = (float) Math.sin(y);
+    //     float cosY = (float) Math.cos(y);
+    //     float sinZ = (float) Math.sin(z);
+    //     float cosZ = (float) Math.cos(z);
+    //     float m_sinX = -sinX;
+    //     float m_sinY = -sinY;
+    //     float m_sinZ = -sinZ;
+    //     float nm10 = mat.m10 * cosX + mat.m20 * sinX;
+    //     float nm11 = mat.m11 * cosX + mat.m21 * sinX;
+    //     float nm12 = mat.m12 * cosX + mat.m22 * sinX;
+    //     float nm13 = mat.m13 * cosX + mat.m23 * sinX;
+    //     float nm20 = mat.m10 * m_sinX + mat.m20 * cosX;
+    //     float nm21 = mat.m11 * m_sinX + mat.m21 * cosX;
+    //     float nm22 = mat.m12 * m_sinX + mat.m22 * cosX;
+    //     float nm23 = mat.m13 * m_sinX + mat.m23 * cosX;
+    //     float nm00 = mat.m00 * cosY + nm20 * m_sinY;
+    //     float nm01 = mat.m01 * cosY + nm21 * m_sinY;
+    //     float nm02 = mat.m02 * cosY + nm22 * m_sinY;
+    //     float nm03 = mat.m03 * cosY + nm23 * m_sinY;
+    //     mat.m20 = mat.m00 * sinY + nm20 * cosY;
+    //     mat.m21 = mat.m01 * sinY + nm21 * cosY;
+    //     mat.m22 = mat.m02 * sinY + nm22 * cosY;
+    //     mat.m23 = mat.m03 * sinY + nm23 * cosY;
+    //     mat.m00 = nm00 * cosZ + nm10 * sinZ;
+    //     mat.m01 = nm01 * cosZ + nm11 * sinZ;
+    //     mat.m02 = nm02 * cosZ + nm12 * sinZ;
+    //     mat.m03 = nm03 * cosZ + nm13 * sinZ;
+    //     mat.m10 = nm00 * m_sinZ + nm10 * cosZ;
+    //     mat.m11 = nm01 * m_sinZ + nm11 * cosZ;
+    //     mat.m12 = nm02 * m_sinZ + nm12 * cosZ;
+    //     mat.m13 = nm03 * m_sinZ + nm13 * cosZ;
+    //     return mat;
+    // }
+}
+
+pub proc translate(m, x, y, z) {
+    // // TODO!
+    // public static Mat4 translate(Mat4 mat, float x, float y, float z) {
+    //     mat.m30 = mat.m00 * x + (mat.m10 * y + (mat.m20 * z + mat.m30));
+    //     mat.m31 = mat.m01 * x + (mat.m11 * y + (mat.m21 * z + mat.m31));
+    //     mat.m32 = mat.m02 * x + (mat.m12 * y + (mat.m22 * z + mat.m32));
+    //     mat.m33 = mat.m03 * x + (mat.m13 * y + (mat.m23 * z + mat.m33));
+    //     return mat;
+    // }
+}
+
+pub proc ortho(left, right, bottom, top, near_plane, far_plane) {
+    // // TODO!
+    // public static Mat4 setOrtho(Mat4 mat, float left, float right, float bottom, float top, float nearPlane, float farPlane) {
+    //     mat.identity();
+    //     mat.m00 = 2.0f / (right - left);
+    //     mat.m11 = 2.0f / (top - bottom);
+    //     mat.m22 = 2.0f / (nearPlane - farPlane);
+    //     mat.m30 = (right + left) / (left - right);
+    //     mat.m31 = (top + bottom) / (bottom - top);
+    //     mat.m32 = (farPlane + nearPlane) / (nearPlane - farPlane);
+    //     return mat;
+    // }
+}
+
+pub proc perspective(fov, aspect_ratio, near_plane, far_plane) {
+    // // TODO!
+    // public static Mat4 setPerspective(Mat4 mat, float fov, float aspectRatio, float nearPlane, float farPlane) {
+    //     mat.set(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    //     float h = (float) Math.tan(fov * 0.5f);
+    //     mat.m00 = 1.0f / (h * aspectRatio);
+    //     mat.m11 = 1.0f / h;
+    //     boolean farInf = farPlane > 0 && Float.isInfinite(farPlane);
+    //     boolean nearInf = nearPlane > 0 && Float.isInfinite(nearPlane);
+    //     if (farInf) {
+    //         float e = 1E-6f;
+    //         mat.m22 = e - 1.0f;
+    //         mat.m32 = (e - 2.0f) * nearPlane;
+    //     } else if (nearInf) {
+    //         float e = 1E-6f;
+    //         mat.m22 = 1.0f - e;
+    //         mat.m32 = (2.0f - e) * farPlane;
+    //     } else {
+    //         mat.m22 = (farPlane + nearPlane) / (nearPlane - farPlane);
+    //         mat.m32 = (farPlane + farPlane) * nearPlane / (nearPlane - farPlane);
+    //     }
+    //     mat.m23 = -1.0f;
+    //     return mat;
+    // }
+}
+
+pub proc look_at(eye, at, up) {
+    // // TODO!
+    // public static Mat4 setLookAt(Mat4 mat, float eyeX, float eyeY, float eyeZ, float atX, float atY, float atZ, float upX, float upY, float upZ) {
+    //     float dirX, dirY, dirZ;
+    //     dirX = eyeX - atX;
+    //     dirY = eyeY - atY;
+    //     dirZ = eyeZ - atZ;
+    //     float invDirLength = 1.0f / (float) Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+    //     dirX *= invDirLength;
+    //     dirY *= invDirLength;
+    //     dirZ *= invDirLength;
+    //     float leftX, leftY, leftZ;
+    //     leftX = upY * dirZ - upZ * dirY;
+    //     leftY = upZ * dirX - upX * dirZ;
+    //     leftZ = upX * dirY - upY * dirX;
+    //     float invLeftLength = 1.0f / (float) Math.sqrt(leftX * leftX + leftY * leftY + leftZ * leftZ);
+    //     leftX *= invLeftLength;
+    //     leftY *= invLeftLength;
+    //     leftZ *= invLeftLength;
+    //     float upnX = dirY * leftZ - dirZ * leftY;
+    //     float upnY = dirZ * leftX - dirX * leftZ;
+    //     float upnZ = dirX * leftY - dirY * leftX;
+    //     mat.m00 = leftX;
+    //     mat.m01 = upnX;
+    //     mat.m02 = dirX;
+    //     mat.m03 = 0.0f;
+    //     mat.m10 = leftY;
+    //     mat.m11 = upnY;
+    //     mat.m12 = dirY;
+    //     mat.m13 = 0.0f;
+    //     mat.m20 = leftZ;
+    //     mat.m21 = upnZ;
+    //     mat.m22 = dirZ;
+    //     mat.m23 = 0.0f;
+    //     mat.m30 = -(leftX * eyeX + leftY * eyeY + leftZ * eyeZ);
+    //     mat.m31 = -(upnX * eyeX + upnY * eyeY + upnZ * eyeZ);
+    //     mat.m32 = -(dirX * eyeX + dirY * eyeY + dirZ * eyeZ);
+    //     mat.m33 = 1.0f;
+    //     return mat;
+    // }
+}

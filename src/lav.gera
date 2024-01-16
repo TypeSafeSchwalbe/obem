@@ -1,7 +1,7 @@
 
 mod obem::lav
 
-use std::(math, iter, arr)
+use std::(math, iter, arr, str)
 
 pub proc add(a, b) {
     var r = array(0.0, math::min(length(a), length(b)))
@@ -63,3 +63,34 @@ pub proc cross(a, b) {
         a[0] * b[1] - a[1] * b[0]
     ]
 }
+
+pub proc norm(v) {
+    var l = v |> len()
+    case l == 0.0 -> return v
+    return v |> div(l)
+}
+
+pub proc x(v) { return v[0] }
+pub proc y(v) { return v[1] }
+pub proc z(v) { return v[2] }
+pub proc w(v) { return v[3] }
+
+pub proc swizzle(v, components) {
+    return components
+        |> str::iter()
+        |> iter::map(|c| {
+            case c {
+                "x" -> return v[0]
+                "y" -> return v[1]
+                "z" -> return v[2]
+                "w" -> return v[3]
+            }
+            return "'_' is not a valid component!"
+                |> str::fmt([c])
+                |> panic()
+        })
+        |> arr::collect()
+}
+
+
+
