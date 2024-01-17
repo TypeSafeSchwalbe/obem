@@ -1,4 +1,3 @@
-
 mod obem::lav
 
 use std::(math, iter, arr, str)
@@ -99,6 +98,3 @@ pub proc swizzle(v, components) {
         })
         |> arr::collect()
 }
-
-
-

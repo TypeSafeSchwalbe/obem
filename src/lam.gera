@@ -1,7 +1,7 @@
 
 mod obem::lam
 
-use std::arr
+use std::(arr, iter)
 
 pub proc new2x2(
     m00, m01,
@@ -136,27 +136,59 @@ pub proc m32(m) { return m[3][2] }
 pub proc m33(m) { return m[3][3] }
 
 pub proc add(a, b) {
-    // TODO!
+    var row_count = math::min(length(a), length(b))
+    case row_count == 0 -> return []
+    var column_count = math::min(length(a[0]), length(b[0]))
+    return 0..row_count
+        |> iter::map(|row_idx| 0..column_count
+            |> iter::map(|column_idx| {
+                a[row_idx][column_idx] + b[row_idx][column_idx]
+            })
+            |> arr::collect()
+        )
+        |> arr::collect()
 }
 
 pub proc sub(a, b) {
-    // TODO!
+    var row_count = math::min(length(a), length(b))
+    case row_count == 0 -> return []
+    var column_count = math::min(length(a[0]), length(b[0]))
+    return 0..row_count
+        |> iter::map(|row_idx| 0..column_count
+            |> iter::map(|column_idx| {
+                a[row_idx][column_idx] - b[row_idx][column_idx]
+            })
+            |> arr::collect()
+        )
+        |> arr::collect()
 }
 
 pub proc mul(a, b) {
     // TODO!
 }
 
-pub proc div(a, b) {
-    // TODO!
-}
-
 pub proc neg(m) {
-    // TODO!
+    var row_count = length(m)
+    case row_count == 0 -> return []
+    var column_count = length(m[0])
+    return 0..row_count
+        |> iter::map(|row_idx| 0..column_count
+            |> iter::map(|column_idx| {
+                -m[row_idx][column_idx]
+            })
+            |> arr::collect()
+        )
+        |> arr::collect()
 }
 
-pub proc apply(m, v) {
-    // TODO!
+pub proc apply(v, m) {
+    return m
+        |> arr::iter()
+        |> iter::map(|row| 0..length(row)
+            |> iter::map(|column_idx| row[column_idx] * v[column_idx])
+            |> iter::reduce(|a, b| a + b, 0.0)
+        )
+        |> arr::collect()
 }
 
 pub proc scale(m, x, y, z) {
