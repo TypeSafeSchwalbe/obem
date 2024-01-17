@@ -43,6 +43,14 @@ pub proc neg(v) {
     return r
 }
 
+pub proc scale(v, f) {
+    var r = v |> arr::clone()
+    0..length(r) |> iter::for_each(|i| {
+        r[i] = r[i] * f
+    })
+    return r
+}
+
 pub proc len(v) {
     return v
         |> arr::iter()
@@ -67,7 +75,7 @@ pub proc cross(a, b) {
 pub proc norm(v) {
     var l = v |> len()
     case l == 0.0 -> return v
-    return v |> div(l)
+    return v |> scale(1.0 / l)
 }
 
 pub proc x(v) { return v[0] }
