@@ -1,7 +1,7 @@
 
 mod obem::lam
 
-use std::(arr, iter)
+use std::(arr, iter, math)
 
 pub proc new2x2(
     m00, m01,
@@ -181,34 +181,35 @@ pub proc neg(m) {
         |> arr::collect()
 }
 
-pub proc apply(v, m) {
-    return m
-        |> arr::iter()
-        |> iter::map(|row| 0..length(row)
-            |> iter::map(|column_idx| row[column_idx] * v[column_idx])
-            |> iter::reduce(|a, b| a + b, 0.0)
-        )
-        |> arr::collect()
-}
+// // Currently not available because of a compiler bug, 
+// // please refer to https://trello.com/c/kxVOA9up
 
-pub proc scale(m, x, y, z) {
-    // // TODO!
-    // public static Mat4 scale(Mat4 mat, float x, float y, float z) {
-    //     mat.m00 = mat.m00 * x;
-    //     mat.m01 = mat.m01 * x;
-    //     mat.m02 = mat.m02 * x;
-    //     mat.m03 = mat.m03 * x;
-    //     mat.m10 = mat.m10 * y;
-    //     mat.m11 = mat.m11 * y;
-    //     mat.m12 = mat.m12 * y;
-    //     mat.m13 = mat.m13 * y;
-    //     mat.m20 = mat.m20 * z;
-    //     mat.m21 = mat.m21 * z;
-    //     mat.m22 = mat.m22 * z;
-    //     mat.m23 = mat.m23 * z;
-    //     return mat;
-    // }
-}
+// pub proc apply(v, m) {
+//     return m
+//         |> arr::iter()
+//         |> iter::map(|row| 0..length(row)
+//             |> iter::map(|column_idx| row[column_idx] * v[column_idx])
+//             |> iter::reduce(|a, b| a + b, 0.0)
+//         )
+//         |> arr::collect()
+// }
+
+// pub proc scale(m, x, y, z) {
+//     var r = m |> arr::clone()
+//     case length(r) > 0 -> 0..length(r[0])
+//         |> iter::for_each(|column_idx| {
+//             r[0][column_idx] = r[0][column_idx] * x
+//         })
+//     case length(r) > 1 -> 0..length(r[1])
+//         |> iter::for_each(|column_idx| {
+//             r[1][column_idx] = r[1][column_idx] * y
+//         })
+//     case length(r) > 2 -> 0..length(r[2])
+//         |> iter::for_each(|column_idx| {
+//             r[2][column_idx] = r[2][column_idx] * z
+//         })
+//     return r
+// }
 
 pub proc rotate(m, x, y, z) {
     // // TODO!
