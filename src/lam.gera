@@ -263,43 +263,36 @@ pub proc translate(m, x, y, z) {
 }
 
 pub proc ortho(left, right, bottom, top, near_plane, far_plane) {
-    // // TODO!
-    // public static Mat4 setOrtho(Mat4 mat, float left, float right, float bottom, float top, float nearPlane, float farPlane) {
-    //     mat.identity();
-    //     mat.m00 = 2.0f / (right - left);
-    //     mat.m11 = 2.0f / (top - bottom);
-    //     mat.m22 = 2.0f / (nearPlane - farPlane);
-    //     mat.m30 = (right + left) / (left - right);
-    //     mat.m31 = (top + bottom) / (bottom - top);
-    //     mat.m32 = (farPlane + nearPlane) / (nearPlane - farPlane);
-    //     return mat;
-    // }
+    var r = iden4x4()
+    r[0][0] = 2.0 / (right - left)
+    r[1][1] = 2.0 / (top - bottom)
+    r[2][2] = 2.0 / (near_plane - far_plane)
+    r[3][0] = (right + left) / (left - right)
+    r[3][1] = (top + bottom) / (bottom - top)
+    r[3][2] = (far_plane + near_plane) / (near_plane - far_plane)
+    return r
 }
 
 pub proc perspective(fov, aspect_ratio, near_plane, far_plane) {
-    // // TODO!
-    // public static Mat4 setPerspective(Mat4 mat, float fov, float aspectRatio, float nearPlane, float farPlane) {
-    //     mat.set(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    //     float h = (float) Math.tan(fov * 0.5f);
-    //     mat.m00 = 1.0f / (h * aspectRatio);
-    //     mat.m11 = 1.0f / h;
-    //     boolean farInf = farPlane > 0 && Float.isInfinite(farPlane);
-    //     boolean nearInf = nearPlane > 0 && Float.isInfinite(nearPlane);
-    //     if (farInf) {
-    //         float e = 1E-6f;
-    //         mat.m22 = e - 1.0f;
-    //         mat.m32 = (e - 2.0f) * nearPlane;
-    //     } else if (nearInf) {
-    //         float e = 1E-6f;
-    //         mat.m22 = 1.0f - e;
-    //         mat.m32 = (2.0f - e) * farPlane;
-    //     } else {
-    //         mat.m22 = (farPlane + nearPlane) / (nearPlane - farPlane);
-    //         mat.m32 = (farPlane + farPlane) * nearPlane / (nearPlane - farPlane);
-    //     }
-    //     mat.m23 = -1.0f;
-    //     return mat;
-    // }
+    var r = iden4x4()
+    var h = math::tan(fov * 0.5)
+    r[0][0] = 1.0 / (h * aspect_ratio)
+    r[1][1] = 1.0 / h
+    case far_plane > 0.0 && far_plane == math::INF -> {
+        var e = 0.000001
+        r[2][2] = e - 1.0
+        r[3][2] = (e - 2.0) * near_plane
+    } else case near_plane > 0.0 && near_plane == math::INF {
+        var e = 0.000001
+        r[2][2] = 1.0 - e
+        r[3][2] = (2.0 - e) * far_plane
+    } else {
+        r[2][2] = (far_plane + near_plane) / (near_plane - far_plane);
+        r[3][2] = (far_plane + far_plane) * near_plane / (near_plane - far_plane);
+    }
+    r[2][3] = -1.0
+    r[3][3] = 0.0
+    return r
 }
 
 pub proc look_at(eye, at, up) {
