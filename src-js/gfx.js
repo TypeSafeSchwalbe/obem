@@ -1,5 +1,6 @@
 
 function obem_create_mesh(vertices, indices) {
+    obem.enforce_init();
     const gl = obem.gl;
     const vertex_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
@@ -26,7 +27,16 @@ function obem_check_shader_comp(shader) {
     }
 }
 
+function obem_check_shader_link(program) {
+    const gl = obem.gl;
+    const linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+    if (!linked) {
+        throw gl.getProgramInfoLog(program);
+    }
+}
+
 function obem_create_shader(vertex_src, fragment_src) {
+    obem.enforce_init();
     const gl = obem.gl;
     const vertex_shader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertex_shader, vertex_src);
@@ -40,7 +50,7 @@ function obem_create_shader(vertex_src, fragment_src) {
     gl.attachShader(shader_program, vertex_shader);
     gl.attachShader(shader_program, fragment_shader);
     gl.linkProgram(shader_program);
-
+    obem_check_shader_link(shader_program);
     return {
         vertex_shader,
         fragment_shader,
@@ -51,6 +61,7 @@ function obem_create_shader(vertex_src, fragment_src) {
 
 
 function obem_create_texture(width, height) {
+    obem.enforce_init();
     const data = new Uint8Array(Number(width) * Number(height) * 4);
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -68,6 +79,7 @@ function obem_create_texture(width, height) {
 
 
 function obem_main_surface() {
+    obem.enforce_init();
     return {
         frame_buffer: null,
         width: () => obem.canvas.width,
@@ -77,6 +89,7 @@ function obem_main_surface() {
 }
 
 function obem_create_surface(texture) {
+    obem.enforce_init();
     const gl = obem.gl;
     if(!(texture.texture instanceof WebGLTexture)) {
         throw new Error("The given texture is invalid!");
@@ -118,6 +131,7 @@ function obem_surface_height(surface) {
 }
 
 function obem_clear_color(surface, r, g, b, a) {
+    obem.enforce_init();
     const gl = obem.gl;
     if(surface.frame_buffer !== null
         && !(surface.frame_buffer instanceof WebGLFramebuffer)) {
@@ -130,6 +144,7 @@ function obem_clear_color(surface, r, g, b, a) {
 }
 
 function obem_clear_depth(surface, d) {
+    obem.enforce_init();
     const gl = obem.gl;
     if(surface.frame_buffer !== null
         && !(surface.frame_buffer instanceof WebGLFramebuffer)) {
@@ -143,6 +158,7 @@ function obem_clear_depth(surface, d) {
 
 
 function obem_render(mesh, attrib_sizes, shader, depth_test, surface) {
+    obem.enforce_init();
     const gl = obem.gl;
     if(depth_test === true) { gl.enable(gl.DEPTH_TEST); }
     else { gl.disable(gl.DEPTH_TEST); }

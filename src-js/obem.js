@@ -1,38 +1,55 @@
 
 const obem = {
+    initialized: false,
+    init_callbacks: [],
+    frame_callbacks: [],
+
+    init: function() {
+        const canvas = document.createElement("canvas");
+        canvas.style.position = "absolute";
+        canvas.style.width = "100vw";
+        canvas.style.height = "100vh";
+        canvas.style.top = "0px";
+        canvas.style.left = "0px";
+        document.body.appendChild(canvas);
+        this.canvas = canvas;
+        this.gl = canvas.getContext("webgl");
+        this.initialized = true;
+        for(const c of this.init_callbacks) { c(); }
+    },
+
+    enforce_init: function() {
+        if(!this.initialized) {
+            throw "Obem has not yet been initialized!"
+                + " (Use 'obem::on_init' to have a function called when Obem is ready.)";
+        }
+    },
+
     canvas: null,
     gl: null,
     delta_time: 0.0,
     width: 0,
     height: 0,
-    
-    init_callbacks: [],
-    frame_callbacks: []
+
+    gameloop: function() {
+        let last_timestamp = 0;
+        const frame = (timestamp) => {
+            if(last_timestamp != 0) {
+                this.delta_time = (timestamp - last_timestamp) / 1000.0;
+            }
+            last_timestamp = timestamp;
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            for(const c of this.frame_callbacks) { c(); }
+            window.requestAnimationFrame(frame);
+        };
+        window.requestAnimationFrame(frame);
+    }
 };
 
 window.onload = () => {
-    const canvas = document.createElement("canvas");
-    canvas.style.position = "absolute";
-    canvas.style.width = "100vw";
-    canvas.style.height = "100vh";
-    canvas.style.top = "0px";
-    canvas.style.left = "0px";
-    document.body.appendChild(canvas);
-    obem.canvas = canvas;
-    obem.gl = canvas.getContext("webgl");
-    for(const c of obem.init_callbacks) { c(); }
-    let last_timestamp = 0;
-    const frame = (timestamp) => {
-        if(last_timestamp != 0) {
-            obem.delta_time = (timestamp - last_timestamp) / 1000.0;
-        }
-        last_timestamp = timestamp;
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-        for(const c of obem.frame_callbacks) { c(); }
-        window.requestAnimationFrame(frame);
-    };
-    window.requestAnimationFrame(frame);
+    obem.init();
+    obem.gameloop();
 };
 
 function obem_on_init(init_callback) {
