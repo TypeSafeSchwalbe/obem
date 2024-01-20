@@ -59,7 +59,7 @@ pub proc len(v) {
 
 pub proc dot(a, b) {
     return 0..math::min(length(a), length(b))
-        |> iter::map(|i| a[i] + b[i])
+        |> iter::map(|i| a[i] * b[i])
         |> iter::reduce(|s, n| s + n, 0.0)
 }
 
@@ -97,4 +97,8 @@ pub proc swizzle(v, components) {
                 |> panic()
         })
         |> arr::collect()
+}
+
+pub proc clone(v) {
+    return v |> arr::clone()
 }

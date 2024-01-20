@@ -32,6 +32,8 @@ const obem = {
     height: 0,
 
     gameloop: function() {
+        this.enforce_init();
+        const canvas = obem.canvas;
         let last_timestamp = 0;
         const frame = (timestamp) => {
             if(last_timestamp != 0) {
