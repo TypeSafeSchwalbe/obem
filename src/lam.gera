@@ -1,167 +1,210 @@
 
 mod obem::lam
 
-use std::(arr, iter, math)
+use std::(arr, iter, math, str)
 use obem::lav
+
+proc new(values, height, width) {
+    return {
+        values = values,
+        height = height,
+        width = width
+    }
+}
+
+proc new_empty(height, width) {
+    return {
+        values = array(0.0, height * width),
+        height = height,
+        width = width
+    }
+}
 
 pub proc new2x2(
     m00, m01,
     m10, m11
-) { return [
-    [m00, m01],
-    [m10, m11]
-] }
+) {
+    return [
+        m00, m01,
+        m10, m11
+    ] |> new(2, 2)
+}
 
 pub proc new3x2(
-    m00, m01, m02,
-    m10, m11, m12
-) { return [
-    [m00, m01, m02],
-    [m10, m11, m12]
-] }
-
-pub proc new4x2(
-    m00, m01, m02, m03,
-    m10, m11, m12, m13
-) { return [
-    [m00, m01, m02, m03],
-    [m10, m11, m12, m13]
-] }
-
-pub proc new2x3(
     m00, m01,
     m10, m11,
     m20, m21
-) { return [
-    [m00, m01],
-    [m10, m11],
-    [m20, m21]
-] }
+) {
+    return [
+        m00, m01,
+        m10, m11,
+        m20, m21
+    ] |> new(3, 2)
+}
+
+pub proc new4x2(
+    m00, m01,
+    m10, m11,
+    m20, m21,
+    m30, m31
+) {
+    return [
+        m00, m01,
+        m10, m11,
+        m20, m21,
+        m30, m31
+    ] |> new(4, 2)
+}
+
+pub proc new2x3(
+    m00, m01, m02,
+    m10, m11, m12
+) {
+    return [
+        m00, m01, m02,
+        m10, m11, m12
+    ] |> new(2, 3)
+}
 
 pub proc new3x3(
     m00, m01, m02,
     m10, m11, m12,
     m20, m21, m22
-) { return [
-    [m00, m01, m02],
-    [m10, m11, m12],
-    [m20, m21, m22]
-] }
+) {
+    return [
+        m00, m01, m02,
+        m10, m11, m12,
+        m20, m21, m22
+    ] |> new(3, 3)
+}
 
 pub proc new4x3(
-    m00, m01, m02, m03,
-    m10, m11, m12, m13,
-    m20, m21, m22, m23
-) { return [
-    [m00, m01, m02, m03],
-    [m10, m11, m12, m13],
-    [m20, m21, m22, m23]
-] }
-pub proc new2x4(
-    m00, m01,
-    m10, m11,
-    m20, m21,
-    m30, m31
-) { return [
-    [m00, m01],
-    [m10, m11],
-    [m20, m21],
-    [m30, m31]
-] }
-
-pub proc new3x4(
     m00, m01, m02,
     m10, m11, m12,
     m20, m21, m22,
-    m30, m31, m32
-) { return [
-    [m00, m01, m02],
-    [m10, m11, m12],
-    [m20, m21, m22],
-    [m30, m31, m32]
-] }
+    m30, m31, m32,
+) {
+    return [
+        m00, m01, m02,
+        m10, m11, m12,
+        m20, m21, m22,
+        m30, m31, m32,
+    ] |> new(4, 3)
+}
+
+pub proc new2x4(
+    m00, m01, m02, m03,
+    m10, m11, m12, m13
+) {
+    return [
+        m00, m01, m02, m03,
+        m10, m11, m12, m13
+    ] |> new(2, 4)
+}
+
+pub proc new3x4(
+    m00, m01, m02, m03,
+    m10, m11, m12, m13,
+    m20, m21, m22, m23
+) {
+    return [
+        m00, m01, m02, m03,
+        m10, m11, m12, m13,
+        m20, m21, m22, m23
+    ] |> new(3, 4)
+}
 
 pub proc new4x4(
     m00, m01, m02, m03,
     m10, m11, m12, m13,
     m20, m21, m22, m23,
     m30, m31, m32, m33
-) { return [
-    [m00, m01, m02, m03],
-    [m10, m11, m12, m13],
-    [m20, m21, m22, m23],
-    [m30, m31, m32, m33]
-] }
-
-pub proc iden2x2() { return [
-    [1.0, 0.0],
-    [0.0, 1.0]
-] }
-
-pub proc iden3x3() { return [
-    [1.0, 0.0, 0.0],
-    [0.0, 1.0, 0.0],
-    [0.0, 0.0, 1.0]
-] }
-
-pub proc iden4x4() { return [
-    [1.0, 0.0, 0.0, 0.0],
-    [0.0, 1.0, 0.0, 0.0],
-    [0.0, 0.0, 1.0, 0.0],
-    [0.0, 0.0, 0.0, 1.0]
-] }
-
-pub proc row(m, row) {
-    return m[row] |> arr::clone()
+) {
+    return [
+        m00, m01, m02, m03,
+        m10, m11, m12, m13,
+        m20, m21, m22, m23,
+        m30, m31, m32, m33
+    ] |> new(4, 4)
 }
 
-pub proc row_column(m, row, column) {
-    return m[row][column]
+pub proc iden2x2() { return new2x2(
+    1.0, 0.0,
+    0.0, 1.0
+) }
+
+pub proc iden3x3() { return new3x3(
+    1.0, 0.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 0.0, 1.0
+) }
+
+pub proc iden4x4() { return new4x4(
+    1.0, 0.0, 0.0, 0.0,
+    0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0,
+    0.0, 0.0, 0.0, 1.0
+) }
+
+pub proc at(m, row_idx, column_idx) {
+    case row_idx >= m.height -> "The row index _ is out of bounds \
+for a matrix with _ rows!"
+        |> str::fmt([row_idx |> core::as_str(), m.height |> core::as_str()])
+        |> panic()
+    case column_idx >= m.width -> "The column index _ is out of bounds \
+for a matrix with _ columns!"
+        |> str::fmt([column_idx |> core::as_str(), m.width |> core::as_str()])
+        |> panic()
+    return u_at(m, row_idx, column_idx)
 }
 
-pub proc m00(m) { return m[0][0] }
-pub proc m01(m) { return m[0][1] }
-pub proc m02(m) { return m[0][2] }
-pub proc m03(m) { return m[0][3] }
-pub proc m10(m) { return m[1][0] }
-pub proc m11(m) { return m[1][1] }
-pub proc m12(m) { return m[1][2] }
-pub proc m13(m) { return m[1][3] }
-pub proc m20(m) { return m[2][0] }
-pub proc m21(m) { return m[2][1] }
-pub proc m22(m) { return m[2][2] }
-pub proc m23(m) { return m[2][3] }
-pub proc m30(m) { return m[3][0] }
-pub proc m31(m) { return m[3][1] }
-pub proc m32(m) { return m[3][2] }
-pub proc m33(m) { return m[3][3] }
+proc u_at(m, row_idx, column_idx) {
+    return m.values[m.width * row_idx + column_idx]
+}
+
+proc set_at(value, m, row_idx, column_idx) {
+    m.values[m.width * row_idx + column_idx] = value
+}
+
+pub proc row(m, row_idx) {
+    var r = array(0.0, m.width)
+    0..m.width |> iter::for_each(|column_idx| {
+        r[column_idx] = m |> u_at(row_idx, column_idx)
+    })
+    return r
+}
+
+pub proc column(m, column_idx) {
+    var start = m.height * column_idx
+    return m.values |> arr::subarray(start, start + m.height)
+}
+
+proc enforce_same_size(a, b) {
+    case a.height == b.height && a.width == b.width -> return unit
+    "Sizes of matrices must match, got _x_ and _x_!"
+        |> str::fmt([
+            a.height |> core::as_str(), a.width |> core::as_str(),
+            b.height |> core::as_str(), b.width |> core::as_str()
+        ])
+        |> panic()
+}
 
 pub proc add(a, b) {
-    var row_count = math::min(length(a), length(b))
-    case row_count == 0 -> return []
-    var column_count = math::min(length(a[0]), length(b[0]))
-    return 0..row_count
-        |> iter::map(|row_idx| 0..column_count
-            |> iter::map(|column_idx| {
-                a[row_idx][column_idx] + b[row_idx][column_idx]
-            })
-            |> arr::collect()
-        )
-        |> arr::collect()
+    enforce_same_size(a, b)
+    var r = new_empty(a.height, a.width)
+    0..length(r.values) |> iter::for_each(|i| {
+        r.values[i] = a.values[i] + b.values[i]
+    })
+    return r
 }
 
 pub proc sub(a, b) {
-    var row_count = math::min(length(a), length(b))
-    case row_count == 0 -> return []
-    var column_count = math::min(length(a[0]), length(b[0]))
-    return 0..row_count
-        |> iter::map(|row_idx| 0..column_count
-            |> iter::map(|column_idx| {
-                a[row_idx][column_idx] - b[row_idx][column_idx]
-            })
-            |> arr::collect()
-        )
-        |> arr::collect()
+    enforce_same_size(a, b)
+    var r = new_empty(a.height, a.width)
+    0..length(r.values) |> iter::for_each(|i| {
+        r.values[i] = a.values[i] - b.values[i]
+    })
+    return r
 }
 
 pub proc mul(a, b) {
@@ -169,148 +212,112 @@ pub proc mul(a, b) {
 }
 
 pub proc neg(m) {
-    var row_count = length(m)
-    case row_count == 0 -> return []
-    var column_count = length(m[0])
-    return 0..row_count
-        |> iter::map(|row_idx| 0..column_count
-            |> iter::map(|column_idx| {
-                -m[row_idx][column_idx]
-            })
-            |> arr::collect()
-        )
-        |> arr::collect()
-}
-
-pub proc apply(v, m) {
-    var r = v |> arr::clone()
-    0..math::min(length(r), length(m)) |> iter::for_each(|i| {
-        r[i] = lav::dot(m[i], v)
+    var r = new_empty(m.height, m.width)
+    0..length(r.values) |> iter::for_each(|i| {
+        r.values[i] = -m.values[i]
     })
     return r
 }
 
-pub proc scale2d(m, x, y) {
-    var r = m |> clone()
-    r[0] = m[0] |> lav::scale(x)
-    r[1] = m[1] |> lav::scale(y)
-    return r
-}
-
-pub proc scale3d(m, x, y, z) {
-    var r = m |> clone()
-    r[0] = m[0] |> lav::scale(x)
-    r[1] = m[1] |> lav::scale(y)
-    r[2] = m[2] |> lav::scale(z)
-    return r
-}
-
-pub proc rotate(m, x, y, z) {
-    // // TODO!
-    // public static Mat4 rotate(Mat4 mat, float x, float y, float z) {
-    //     float sinX = (float) Math.sin(x);
-    //     float cosX = (float) Math.cos(x);
-    //     float sinY = (float) Math.sin(y);
-    //     float cosY = (float) Math.cos(y);
-    //     float sinZ = (float) Math.sin(z);
-    //     float cosZ = (float) Math.cos(z);
-    //     float m_sinX = -sinX;
-    //     float m_sinY = -sinY;
-    //     float m_sinZ = -sinZ;
-    //     float nm10 = mat.m10 * cosX + mat.m20 * sinX;
-    //     float nm11 = mat.m11 * cosX + mat.m21 * sinX;
-    //     float nm12 = mat.m12 * cosX + mat.m22 * sinX;
-    //     float nm13 = mat.m13 * cosX + mat.m23 * sinX;
-    //     float nm20 = mat.m10 * m_sinX + mat.m20 * cosX;
-    //     float nm21 = mat.m11 * m_sinX + mat.m21 * cosX;
-    //     float nm22 = mat.m12 * m_sinX + mat.m22 * cosX;
-    //     float nm23 = mat.m13 * m_sinX + mat.m23 * cosX;
-    //     float nm00 = mat.m00 * cosY + nm20 * m_sinY;
-    //     float nm01 = mat.m01 * cosY + nm21 * m_sinY;
-    //     float nm02 = mat.m02 * cosY + nm22 * m_sinY;
-    //     float nm03 = mat.m03 * cosY + nm23 * m_sinY;
-    //     mat.m20 = mat.m00 * sinY + nm20 * cosY;
-    //     mat.m21 = mat.m01 * sinY + nm21 * cosY;
-    //     mat.m22 = mat.m02 * sinY + nm22 * cosY;
-    //     mat.m23 = mat.m03 * sinY + nm23 * cosY;
-    //     mat.m00 = nm00 * cosZ + nm10 * sinZ;
-    //     mat.m01 = nm01 * cosZ + nm11 * sinZ;
-    //     mat.m02 = nm02 * cosZ + nm12 * sinZ;
-    //     mat.m03 = nm03 * cosZ + nm13 * sinZ;
-    //     mat.m10 = nm00 * m_sinZ + nm10 * cosZ;
-    //     mat.m11 = nm01 * m_sinZ + nm11 * cosZ;
-    //     mat.m12 = nm02 * m_sinZ + nm12 * cosZ;
-    //     mat.m13 = nm03 * m_sinZ + nm13 * cosZ;
-    //     return mat;
-    // }
-}
-
-pub proc translate2d(m, x, y) {
-    var r = m |> clone()
-    r[2][0] = m[0][0] * x + (m[1][0] * y + m[2][0])
-    r[2][1] = m[0][1] * x + (m[1][1] * y + m[2][1])
-    r[2][2] = m[0][2] * x + (m[1][2] * y + m[2][2])
-    return r
-}
-
-pub proc translate3d(m, x, y, z) {
-    var r = m |> clone()
-    r[3][0] = m[0][0] * x + (m[1][0] * y + (m[2][0] * z + m[3][0]))
-    r[3][1] = m[0][1] * x + (m[1][1] * y + (m[2][1] * z + m[3][1]))
-    r[3][2] = m[0][2] * x + (m[1][2] * y + (m[2][2] * z + m[3][2]))
-    r[3][3] = m[0][3] * x + (m[1][3] * y + (m[2][3] * z + m[3][3]))
-    return r
-}
-
-pub proc ortho(left, right, bottom, top, near_plane, far_plane) {
-    var r = iden4x4()
-    r[0][0] = 2.0 / (right - left)
-    r[1][1] = 2.0 / (top - bottom)
-    r[2][2] = 2.0 / (near_plane - far_plane)
-    r[3][0] = (right + left) / (left - right)
-    r[3][1] = (top + bottom) / (bottom - top)
-    r[3][2] = (far_plane + near_plane) / (near_plane - far_plane)
-    return r
-}
-
-pub proc perspective(fov, aspect_ratio, near_plane, far_plane) {
-    var r = iden4x4()
-    var h = math::tan(fov * 0.5)
-    r[0][0] = 1.0 / (h * aspect_ratio)
-    r[1][1] = 1.0 / h
-    case far_plane > 0.0 && far_plane == math::INF -> {
-        var e = 0.000001
-        r[2][2] = e - 1.0
-        r[3][2] = (e - 2.0) * near_plane
-    } else case near_plane > 0.0 && near_plane == math::INF -> {
-        var e = 0.000001
-        r[2][2] = 1.0 - e
-        r[3][2] = (2.0 - e) * far_plane
-    } else {
-        r[2][2] = (far_plane + near_plane) / (near_plane - far_plane)
-        r[3][2] = (far_plane + far_plane) * near_plane / (near_plane - far_plane)
+pub proc scale(m, f) {
+    case length(f) != m.height -> {
+        "Vector element and matrix row count must match, \
+but got a vector with _ elements and a _x_ matrix!"
+            |> str::fmt([
+                f |> length() |> core::as_str(),
+                m.height |> core::as_str(), m.width |> core::as_str()
+            ])
+            |> panic()
     }
-    r[2][3] = -1.0
-    r[3][3] = 0.0
+    var r = m |> clone()
+    0..m.height |> iter::for_each(|row_idx| {
+        0..m.width |> iter::for_each(|column_idx| {
+            u_at(m, row_idx, column_idx) * f[row_idx]
+                |> set_at(r, row_idx, column_idx)
+        })
+    })
     return r
 }
 
-pub proc look_at(eye, at, up) {
-    var dir = eye |> lav::sub(at) |> lav::norm()
-    var left = up |> lav::cross(dir) |> lav::norm()
-    var up = dir |> lav::cross(left)
-    return new4x4(
-        left[0],              up[0],              dir[0],              0.0,
-        left[1],              up[1],              dir[1],              0.0,
-        left[2],              up[2],              dir[2],              0.0,
-        -lav::dot(left, eye), -lav::dot(up, eye), -lav::dot(dir, eye), 1.0
-    )
+pub proc rotate_x(m, angle) {
+    // TODO!
 }
+
+pub proc rotate_y(m, angle) {
+    // TODO!
+}
+
+pub proc rotate_z(m, angle) {
+    // TODO!
+}
+
+pub proc translate(m, d) {
+    var dv = d |> arr::concat([1.0])
+    var r = m |> clone()
+    0..m.height |> iter::for_each(|row_idx| {
+        lav::dot(m |> row(row_idx), dv)
+            |> set_at(r, row_idx, 3)
+    })
+    return r
+}
+
+// pub proc ortho(left, right, bottom, top, near_plane, far_plane) {
+//     var r = iden4x4()
+//     r[0][0] = 2.0 / (right - left)
+//     r[1][1] = 2.0 / (top - bottom)
+//     r[2][2] = 2.0 / (near_plane - far_plane)
+//     r[3][0] = (right + left) / (left - right)
+//     r[3][1] = (top + bottom) / (bottom - top)
+//     r[3][2] = (far_plane + near_plane) / (near_plane - far_plane)
+//     return r
+// }
+
+// pub proc perspective(fov, aspect_ratio, near_plane, far_plane) {
+//     var r = iden4x4()
+//     var h = math::tan(fov * 0.5)
+//     r[0][0] = 1.0 / (h * aspect_ratio)
+//     r[1][1] = 1.0 / h
+//     case far_plane > 0.0 && far_plane == math::INF -> {
+//         var e = 0.000001
+//         r[2][2] = e - 1.0
+//         r[3][2] = (e - 2.0) * near_plane
+//     } else case near_plane > 0.0 && near_plane == math::INF -> {
+//         var e = 0.000001
+//         r[2][2] = 1.0 - e
+//         r[3][2] = (2.0 - e) * far_plane
+//     } else {
+//         r[2][2] = (far_plane + near_plane) / (near_plane - far_plane)
+//         r[3][2] = (far_plane + far_plane) * near_plane / (near_plane - far_plane)
+//     }
+//     r[2][3] = -1.0
+//     r[3][3] = 0.0
+//     return r
+// }
+
+// pub proc look_at(eye, at, up) {
+//     var dir = eye |> lav::sub(at) |> lav::norm()
+//     var left = up |> lav::cross(dir) |> lav::norm()
+//     var up = dir |> lav::cross(left)
+//     return new4x4(
+//         left[0],              up[0],              dir[0],              0.0,
+//         left[1],              up[1],              dir[1],              0.0,
+//         left[2],              up[2],              dir[2],              0.0,
+//         -lav::dot(left, eye), -lav::dot(up, eye), -lav::dot(dir, eye), 1.0
+//     )
+// }
 
 pub proc clone(m) {
-    var r = m |> arr::clone()
-    0..length(r) |> iter::for_each(|row_idx| {
-        r[row_idx] = r[row_idx] |> arr::clone()
-    })
-    return r
+    return {
+        values = m.values |> arr::clone(),
+        height = m.height,
+        width = m.width
+    }
+}
+
+pub proc as_str(m) {
+    return 0..m.height |> iter::map(|row_idx| "|_|" |> str::fmt([
+        0..m.width |> iter::map(|column_idx|
+            m |> u_at(row_idx, column_idx) |> core::as_str()
+        ) |> str::join(", ")
+    ])) |> str::join("\n")
 }

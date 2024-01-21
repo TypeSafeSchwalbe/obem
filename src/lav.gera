@@ -1,6 +1,7 @@
 mod obem::lav
 
 use std::(math, iter, arr, str)
+use obem::lam
 
 pub proc add(a, b) {
     var r = array(0.0, math::min(length(a), length(b)))
@@ -58,12 +59,20 @@ pub proc len(v) {
 }
 
 pub proc dot(a, b) {
-    return 0..math::min(length(a), length(b))
+    case length(a) != length(b) -> "Vectors must have the same length, \
+but got vectors of lengths _ and _ instead!"
+        |> str::fmt([length(a) |> core::as_str(), length(b) |> core::as_str()])
+        |> panic()
+    return 0..length(a)
         |> iter::map(|i| a[i] * b[i])
         |> iter::reduce(|s, n| s + n, 0.0)
 }
 
 pub proc cross(a, b) {
+    case length(a) != 3 || length(b) != 3 -> "Vectors must have a length of 3, \
+but got vectors of lengths _ and _ instead!"
+        |> str::fmt([length(a) |> core::as_str(), length(b) |> core::as_str()])
+        |> panic()
     return [
         a[1] * b[2] - a[2] * b[1],
         a[2] * b[0] - a[0] * b[2],
@@ -75,6 +84,23 @@ pub proc norm(v) {
     var l = v |> len()
     case l == 0.0 -> return v
     return v |> scale(1.0 / l)
+}
+
+pub proc transform(v, m) {
+    case length(v) != m.width -> {
+        "Vector element and matrix column count must match, \
+but got a vector with _ elements and a _x_ matrix!"
+            |> str::fmt([
+                v |> length() |> core::as_str(),
+                m.height |> core::as_str(), m.width |> core::as_str()
+            ])
+            |> panic()
+    }
+    var r = v |> arr::clone()
+    0..m.width |> iter::for_each(|column_idx| {
+        r[column_idx] = dot(v, m |> lam::column(column_idx))
+    })
+    return r
 }
 
 pub proc x(v) { return v[0] }
@@ -101,4 +127,13 @@ pub proc swizzle(v, components) {
 
 pub proc clone(v) {
     return v |> arr::clone()
+}
+
+pub proc as_str(v) {
+    return "[_]"
+        |> str::fmt([
+            v |> arr::iter()
+                |> iter::map(|e| core::as_str(e))
+                |> str::join(", ")
+        ])
 }
