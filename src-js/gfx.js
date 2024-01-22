@@ -55,8 +55,171 @@ function obem_create_shader(vertex_src, fragment_src) {
         vertex_shader,
         fragment_shader,
         shader_program,
+        textures: {
+            slots: new Array(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS)),
+            next_slot: 0,
+        },
         shader: 0n
     };
+}
+
+function obem_set_uniform(shader, name, f) {
+    obem.enforce_init();
+    const gl = obem.gl;
+    if(!(shader.shader_program instanceof WebGLProgram)) {
+        throw new Error("The given shader is invalid!");
+    }
+    const location = gl.getUniformLocation(shader.shader_program, name);
+    gl.useProgram(shader.shader_program);
+    f(gl, location);
+    gl.useProgram(null);
+}
+
+function obem_set_uniform_flt(shader, name, value) {
+    obem_set_uniform(shader, name, (gl, loc) => gl.uniform1f(loc, value));
+}
+
+function obem_set_uniform_flt_arr(shader, name, value) {
+    obem_set_uniform(shader, name, (gl, loc) => gl.uniform1fv(loc, value));
+}
+
+function obem_set_uniform_int(shader, name, value) {
+    obem_set_uniform(shader, name, (gl, loc) => gl.uniform1i(
+        loc, Number(BigInt.asIntN(32, value))
+    ));
+}
+
+function obem_set_uniform_int_arr(shader, name, value) {
+    obem_set_uniform(
+        shader, name, (gl, loc) => gl.uniform1iv(
+            loc, new Int32Array(value.map(n => Number(BigInt.asIntN(32, n))))
+        ),
+    );
+}
+
+function obem_set_uniform_vec(shader, name, value) {
+    let f;
+    switch(value.length) {
+        case 1: f = (gl, loc) => gl.uniform1f(loc, ...value); break;
+        case 2: f = (gl, loc) => gl.uniform2f(loc, ...value); break;
+        case 3: f = (gl, loc) => gl.uniform3f(loc, ...value); break;
+        case 4: f = (gl, loc) => gl.uniform4f(loc, ...value); break;
+        default: throw "Expected a vector with a minimum length of 1 and a maximum length of 4,"
+            + " but got a vector of length " + value.length + " instead!";
+    }
+    obem_set_uniform(shader, name, f);
+}
+
+function obem_set_uniform_vec_arr(shader, name, value) {
+    if(value.length === 0) { return; }
+    let l = value[0].length;
+    let f;
+    switch(l) {
+        case 1: f = values => (gl, loc) => gl.uniform1fv(loc, values); break;
+        case 2: f = values => (gl, loc) => gl.uniform2fv(loc, values); break;
+        case 3: f = values => (gl, loc) => gl.uniform3fv(loc, values); break;
+        case 4: f = values => (gl, loc) => gl.uniform4fv(loc, values); break;
+        default: throw "Expected vectors with minimum lengths of 1 and maximum lengths of 4,"
+            + " but got vectors of length " + value.length + " instead!";
+    }
+    let values = [];
+    for(const vector of value) {
+        if(vector.length !== l) {
+            throw "Expected all vectors to have the same length,"
+                + " but got vectors with length " + l + " and " + vector.length + "!";
+        }
+        values.push(...vector);
+    }
+    obem_set_uniform(shader, name, f(values));
+}
+
+function obem_set_uniform_mat(shader, name, value) {
+    if(value.width !== value.height) {
+        throw "Expected a square matrix of size 2, 3 or 4,"
+            + " but got a matrix of size " + value.height + "x" + value.width + "!";
+    }
+    let f;
+    switch(value.width) {
+        case 2n: f = (gl, loc) => gl.uniformMatrix2fv(loc, false, value.values); break;
+        case 3n: f = (gl, loc) => gl.uniformMatrix3fv(loc, false, value.values); break;
+        case 4n: f = (gl, loc) => gl.uniformMatrix4fv(loc, false, value.values); break;
+        default: throw "Expected a square matrix of size 2, 3 or 4,"
+            + " but got a matrix of size " + value.height + "x" + value.width + "!";
+    }
+    obem_set_uniform(shader, name, f);
+}
+
+function obem_set_uniform_mat_arr(shader, name, value) {
+    if(value.length === 0) { return; }
+    if(value[0].width !== value[0].height) {
+        throw "Expected square matrices of size 2, 3 or 4,"
+            + " but got a matrix of size " + value[0].height + "x" + value[0].width + "!";
+    }
+    let l = value[0].width;
+    let f;
+    switch(l) {
+        case 2n: f = values => (gl, loc) => gl.uniformMatrix2fv(loc, false, values); break;
+        case 3n: f = values => (gl, loc) => gl.uniformMatrix3fv(loc, false, values); break;
+        case 4n: f = values => (gl, loc) => gl.uniformMatrix4fv(loc, false, values); break;
+        default: throw "Expected square matrices of size 2, 3 or 4,"
+            + " but got a matrix of size " + value[0].height + "x" + value[0].width + "!";
+    }
+    let values = [];
+    for(const matrix of value) {
+        if(matrix.width !== l || matrix.height !== l) {
+            throw "Expected all matrices to have the same dimensions,"
+                + " but got matrices with size " + l + "x" + l
+                + " and " + matrix.height + "x" + matrix.width + "!";
+        }
+        values.push(...matrix.values);
+    }
+    obem_set_uniform(shader, name, f(values));
+}
+
+function obem_allocate_texture_slot(shader, texture) {
+    if(!("textures" in shader)) {
+        throw "The given shader is invalid!";
+    }
+    let slot = shader.textures.slots.indexOf(texture);
+    if(slot !== -1) { return slot; }
+    slot = shader.textures.next_slot;
+    shader.textures.next_slot = (shader.textures.next_slot + 1) 
+        % shader.textures.slots.length;
+    shader.textures.slots[slot] = texture;
+    return slot;
+} 
+
+function obem_set_uniform_tex(shader, name, value) {
+    if(!(value.tex instanceof WebGLTexture)) {
+        throw new Error("The given texture is invalid!");
+    }
+    obem_set_uniform(shader, name, (gl, loc) => {
+        gl.bindTexture(gl.TEXTURE_2D, null);
+        const slot = obem_allocate_texture_slot(shader, value.tex);
+        gl.uniform1i(loc, slot);
+        gl.activeTexture(gl.TEXTURE0 + slot);
+        gl.bindTexture(gl.TEXTURE_2D, value.tex);
+    });
+    gl.bindTexture(gl.TEXTURE_2D, null);
+}
+
+function obem_set_uniform_tex_arr(shader, name, value) {
+    if(!(value.tex instanceof WebGLTexture)) {
+        throw new Error("The given texture is invalid!");
+    }
+    obem_set_uniform(shader, name, (gl, loc) => {
+        const slots = new Int32Array(value.length);
+        for(let i = 0; i < slots.length; i += 1) {
+            const tex = value[i].tex;
+            const slot = obem_allocate_texture_slot(shader, tex);
+            gl.bindTexture(gl.TEXTURE_2D, null);
+            gl.activeTexture(gl.TEXTURE0 + slot);
+            gl.bindTexture(gl.TEXTURE_2D, tex);
+            slots[i] = slot;
+        }
+        gl.uniform1iv(loc, slots);
+    });
+    gl.bindTexture(gl.TEXTURE_2D, null);
 }
 
 
@@ -70,7 +233,7 @@ function obem_create_texture(width, height) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.bindTexture(gl.TEXTURE_2D, null);
     return {
-        texture,
+        tex: texture,
         width: () => Number(width),
         height: () => Number(height),
         texture: 0n
@@ -91,14 +254,14 @@ function obem_main_surface() {
 function obem_create_surface(texture) {
     obem.enforce_init();
     const gl = obem.gl;
-    if(!(texture.texture instanceof WebGLTexture)) {
+    if(!(texture.tex instanceof WebGLTexture)) {
         throw new Error("The given texture is invalid!");
     }
     const frame_buffer = gl.createFramebuffer();
     gl.bindFramebuffer(gl.FRAMEBUFFER, frame_buffer);
     gl.framebufferTexture2D(
         gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D,
-        texture.texture, 0
+        texture.tex, 0
     ); 
     if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
         throw new Error(
@@ -172,6 +335,13 @@ function obem_render(mesh, attrib_sizes, shader, depth_test, surface) {
         throw new Error("The given shader is invalid!");
     }
     gl.useProgram(shader.shader_program);
+    for(let slot = 0; slot < shader.textures.slots.length; slot += 1) {
+        const tex = shader.textures.slots[slot];
+        if(tex === undefined) { break; }
+        gl.bindTexture(gl.TEXTURE_2D, null);
+        gl.activeTexture(gl.TEXTURE0 + slot);
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+    }
     const attrib_count = gl.getProgramParameter(
         shader.shader_program, gl.ACTIVE_ATTRIBUTES
     );
@@ -214,6 +384,7 @@ function obem_render(mesh, attrib_sizes, shader, depth_test, surface) {
         );
         gl.disableVertexAttribArray(attrib_idx);
     }
+    gl.useProgram(null);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 }
 

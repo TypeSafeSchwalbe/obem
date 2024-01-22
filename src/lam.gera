@@ -256,7 +256,7 @@ pub proc rotate_x(m, angle) {
             |> set_at(r, 1, column_idx)
     })
     0..m.width |> iter::for_each(|column_idx| {
-        at(m, 1, column_idx) * -sin_a + at(m, 2, column_idx) * cos_a
+        at(m, 1, column_idx) * (-sin_a) + at(m, 2, column_idx) * cos_a
             |> set_at(r, 2, column_idx)
     })
     return r
@@ -267,7 +267,7 @@ pub proc rotate_y(m, angle) {
     var cos_a = math::cos(angle)
     var r = m |> clone()
     0..m.width |> iter::for_each(|column_idx| {
-        at(m, 0, column_idx) * cos_a + at(m, 2, column_idx) * -sin_a
+        at(m, 0, column_idx) * cos_a + at(m, 2, column_idx) * (-sin_a)
             |> set_at(r, 0, column_idx)
     })
     0..m.width |> iter::for_each(|column_idx| {
@@ -286,7 +286,7 @@ pub proc rotate_z(m, angle) {
             |> set_at(r, 0, column_idx)
     })
     0..m.width |> iter::for_each(|column_idx| {
-        at(m, 0, column_idx) * -sin_a + at(m, 1, column_idx) * cos_a
+        at(m, 0, column_idx) * (-sin_a) + at(m, 1, column_idx) * cos_a
             |> set_at(r, 1, column_idx)
     })
     return r
@@ -310,12 +310,12 @@ pub proc ortho(left, right, bottom, top, near_plane, far_plane) {
         |> set_at(r, 1, 1)
     2.0 / (near_plane - far_plane)
         |> set_at(r, 2, 2)
-    (right + left) / (left - right)
-        |> set_at(r, 3, 0)
-    (top + bottom) / (bottom - top)
-        |> set_at(r, 3, 1)
-    (far_plane + near_plane) / (near_plane - far_plane)
-        |> set_at(r, 3, 2)
+    var m30 = (right + left) / (left - right)
+    m30 |> set_at(r, 3, 0)
+    var m31 = (top + bottom) / (bottom - top)
+    m31 |> set_at(r, 3, 1)
+    var m32 = (far_plane + near_plane) / (near_plane - far_plane)
+    m32 |> set_at(r, 3, 2)
     return r
 }
 
@@ -330,21 +330,21 @@ pub proc perspective(fov, aspect_ratio, near_plane, far_plane) {
         var e = 0.000001
         e - 1.0
             |> set_at(r, 2, 2)
-        (e - 2.0) * near_plane
+        near_plane * (e - 2.0)
             |> set_at(r, 3, 2)
     } else case near_plane > 0.0 && near_plane == math::INF -> {
         var e = 0.000001
         1.0 - e
             |> set_at(r, 2, 2)
-        (2.0 - e) * far_plane
+        far_plane * (2.0 - e)
             |> set_at(r, 3, 2)
     } else {
-        (far_plane + near_plane) / (near_plane - far_plane)
-            |> set_at(r, 2, 2)
-        (far_plane + far_plane) * near_plane / (near_plane - far_plane)
-            |> set_at(r, 3, 2)
+        var m22 = (far_plane + near_plane) / (near_plane - far_plane)
+        m22 |> set_at(r, 2, 2)
+        var m32 = (far_plane + far_plane) * near_plane / (near_plane - far_plane)
+        m32 |> set_at(r, 3, 2)
     }
-    -1.0 |> set_at(r, 2, 3)
+    0.0 - 1.0 |> set_at(r, 2, 3)
     0.0 |> set_at(r, 3, 3)
     return r
 }
