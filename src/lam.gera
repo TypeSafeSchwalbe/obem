@@ -207,7 +207,16 @@ pub proc sub(a, b) {
 }
 
 pub proc mul(a, b) {
-    // TODO!
+    var r_width = math::min(a.width, b.width)
+    var r_height = math::min(a.height, b.height)
+    var r = new_empty(r_height, r_width)
+    0..r_height |> iter::for_each(|row_idx| {
+        0..r_width |> iter::for_each(|column_idx| {
+            lav::dot(a |> column(column_idx), b |> row(row_idx))
+                |> set_at(r, row_idx, column_idx)
+        })
+    })
+    return r
 }
 
 pub proc neg(m) {
