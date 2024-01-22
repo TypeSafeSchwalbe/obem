@@ -1,4 +1,3 @@
-
 mod obem::lam
 
 use std::(arr, iter, math, str)
@@ -240,15 +239,48 @@ but got a vector with _ elements and a _x_ matrix!"
 }
 
 pub proc rotate_x(m, angle) {
-    // TODO!
+    var sin_a = math::sin(angle)
+    var cos_a = math::cos(angle)
+    var r = m |> clone()
+    0..m.width |> iter::for_each(|column_idx| {
+        at(m, 1, column_idx) * cos_a + at(m, 2, column_idx) * sin_a
+            |> set_at(r, 1, column_idx)
+    })
+    0..m.width |> iter::for_each(|column_idx| {
+        at(m, 1, column_idx) * -sin_a + at(m, 2, column_idx) * cos_a
+            |> set_at(r, 2, column_idx)
+    })
+    return r
 }
 
 pub proc rotate_y(m, angle) {
-    // TODO!
+    var sin_a = math::sin(angle)
+    var cos_a = math::cos(angle)
+    var r = m |> clone()
+    0..m.width |> iter::for_each(|column_idx| {
+        at(m, 0, column_idx) * cos_a + at(m, 2, column_idx) * -sin_a
+            |> set_at(r, 0, column_idx)
+    })
+    0..m.width |> iter::for_each(|column_idx| {
+        at(m, 0, column_idx) * sin_a + at(m, 2, column_idx) * cos_a
+            |> set_at(r, 2, column_idx)
+    })
+    return r
 }
 
 pub proc rotate_z(m, angle) {
-    // TODO!
+    var sin_a = math::sin(angle)
+    var cos_a = math::cos(angle)
+    var r = m |> clone()
+    0..m.width |> iter::for_each(|column_idx| {
+        at(m, 0, column_idx) * cos_a + at(m, 1, column_idx) * sin_a
+            |> set_at(r, 0, column_idx)
+    })
+    0..m.width |> iter::for_each(|column_idx| {
+        at(m, 0, column_idx) * -sin_a + at(m, 1, column_idx) * cos_a
+            |> set_at(r, 1, column_idx)
+    })
+    return r
 }
 
 pub proc translate(m, d) {
@@ -261,50 +293,64 @@ pub proc translate(m, d) {
     return r
 }
 
-// pub proc ortho(left, right, bottom, top, near_plane, far_plane) {
-//     var r = iden4x4()
-//     r[0][0] = 2.0 / (right - left)
-//     r[1][1] = 2.0 / (top - bottom)
-//     r[2][2] = 2.0 / (near_plane - far_plane)
-//     r[3][0] = (right + left) / (left - right)
-//     r[3][1] = (top + bottom) / (bottom - top)
-//     r[3][2] = (far_plane + near_plane) / (near_plane - far_plane)
-//     return r
-// }
+pub proc ortho(left, right, bottom, top, near_plane, far_plane) {
+    var r = iden4x4()
+    2.0 / (right - left)
+        |> set_at(r, 0, 0)
+    2.0 / (top - bottom)
+        |> set_at(r, 1, 1)
+    2.0 / (near_plane - far_plane)
+        |> set_at(r, 2, 2)
+    (right + left) / (left - right)
+        |> set_at(r, 3, 0)
+    (top + bottom) / (bottom - top)
+        |> set_at(r, 3, 1)
+    (far_plane + near_plane) / (near_plane - far_plane)
+        |> set_at(r, 3, 2)
+    return r
+}
 
-// pub proc perspective(fov, aspect_ratio, near_plane, far_plane) {
-//     var r = iden4x4()
-//     var h = math::tan(fov * 0.5)
-//     r[0][0] = 1.0 / (h * aspect_ratio)
-//     r[1][1] = 1.0 / h
-//     case far_plane > 0.0 && far_plane == math::INF -> {
-//         var e = 0.000001
-//         r[2][2] = e - 1.0
-//         r[3][2] = (e - 2.0) * near_plane
-//     } else case near_plane > 0.0 && near_plane == math::INF -> {
-//         var e = 0.000001
-//         r[2][2] = 1.0 - e
-//         r[3][2] = (2.0 - e) * far_plane
-//     } else {
-//         r[2][2] = (far_plane + near_plane) / (near_plane - far_plane)
-//         r[3][2] = (far_plane + far_plane) * near_plane / (near_plane - far_plane)
-//     }
-//     r[2][3] = -1.0
-//     r[3][3] = 0.0
-//     return r
-// }
+pub proc perspective(fov, aspect_ratio, near_plane, far_plane) {
+    var r = iden4x4()
+    var h = math::tan(fov * 0.5)
+    1.0 / (h * aspect_ratio)
+        |> set_at(r, 0, 0)
+    1.0 / h
+        |> set_at(r, 1, 1)
+    case far_plane > 0.0 && far_plane == math::INF -> {
+        var e = 0.000001
+        e - 1.0
+            |> set_at(r, 2, 2)
+        (e - 2.0) * near_plane
+            |> set_at(r, 3, 2)
+    } else case near_plane > 0.0 && near_plane == math::INF -> {
+        var e = 0.000001
+        1.0 - e
+            |> set_at(r, 2, 2)
+        (2.0 - e) * far_plane
+            |> set_at(r, 3, 2)
+    } else {
+        (far_plane + near_plane) / (near_plane - far_plane)
+            |> set_at(r, 2, 2)
+        (far_plane + far_plane) * near_plane / (near_plane - far_plane)
+            |> set_at(r, 3, 2)
+    }
+    -1.0 |> set_at(r, 2, 3)
+    0.0 |> set_at(r, 3, 3)
+    return r
+}
 
-// pub proc look_at(eye, at, up) {
-//     var dir = eye |> lav::sub(at) |> lav::norm()
-//     var left = up |> lav::cross(dir) |> lav::norm()
-//     var up = dir |> lav::cross(left)
-//     return new4x4(
-//         left[0],              up[0],              dir[0],              0.0,
-//         left[1],              up[1],              dir[1],              0.0,
-//         left[2],              up[2],              dir[2],              0.0,
-//         -lav::dot(left, eye), -lav::dot(up, eye), -lav::dot(dir, eye), 1.0
-//     )
-// }
+pub proc look_at(eye, at, up) {
+    var dir = eye |> lav::sub(at) |> lav::norm()
+    var left = up |> lav::cross(dir) |> lav::norm()
+    var up = dir |> lav::cross(left)
+    return new4x4(
+        left[0],              up[0],              dir[0],              0.0,
+        left[1],              up[1],              dir[1],              0.0,
+        left[2],              up[2],              dir[2],              0.0,
+        -lav::dot(left, eye), -lav::dot(up, eye), -lav::dot(dir, eye), 1.0
+    )
+}
 
 pub proc clone(m) {
     return {
