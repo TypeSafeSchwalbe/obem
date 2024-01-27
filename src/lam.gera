@@ -320,44 +320,27 @@ pub proc ortho(left, right, bottom, top, near_plane, far_plane) {
 }
 
 pub proc perspective(fov, aspect_ratio, near_plane, far_plane) {
-    var r = iden4x4()
-    var h = math::tan(fov * 0.5)
-    1.0 / (h * aspect_ratio)
-        |> set_at(r, 0, 0)
-    1.0 / h
-        |> set_at(r, 1, 1)
-    case far_plane > 0.0 && far_plane == math::INF -> {
-        var e = 0.000001
-        e - 1.0
-            |> set_at(r, 2, 2)
-        near_plane * (e - 2.0)
-            |> set_at(r, 3, 2)
-    } else case near_plane > 0.0 && near_plane == math::INF -> {
-        var e = 0.000001
-        1.0 - e
-            |> set_at(r, 2, 2)
-        far_plane * (2.0 - e)
-            |> set_at(r, 3, 2)
-    } else {
-        var m22 = (far_plane + near_plane) / (near_plane - far_plane)
-        m22 |> set_at(r, 2, 2)
-        var m32 = (far_plane + far_plane) * near_plane / (near_plane - far_plane)
-        m32 |> set_at(r, 3, 2)
-    }
-    0.0 - 1.0 |> set_at(r, 2, 3)
-    0.0 |> set_at(r, 3, 3)
-    return r
+    var m00 = 1.0 / (math::tan(fov * 0.5) * aspect_ratio)
+    var m11 = 1.0 / math::tan(fov * 0.5)
+    var m22 = -((far_plane + near_plane) / (far_plane - near_plane))
+    var m23 = -((2.0 * far_plane * near_plane) / (far_plane - near_plane))
+    return new4x4(
+        m00, 0.0,  0.0, 0.0,
+        0.0, m11,  0.0, 0.0,
+        0.0, 0.0,  m22, m23,
+        0.0, 0.0, -1.0, 0.0
+    )
 }
 
 pub proc look_at(eye, at, up) {
-    var dir = eye |> lav::sub(at) |> lav::norm()
-    var left = up |> lav::cross(dir) |> lav::norm()
-    var up = dir |> lav::cross(left)
+    var foreward = lav::sub(at, eye) |> lav::norm()
+    var right = up |> lav::cross(foreward) |> lav::norm()
+    var upn = foreward |> lav::cross(right)
     return new4x4(
-        left[0],              up[0],              dir[0],              0.0,
-        left[1],              up[1],              dir[1],              0.0,
-        left[2],              up[2],              dir[2],              0.0,
-        -lav::dot(left, eye), -lav::dot(up, eye), -lav::dot(dir, eye), 1.0
+         right[0],              upn[0],             -foreward[0],             0.0,
+         right[1],              upn[1],             -foreward[1],             0.0,
+         right[2],              upn[2],             -foreward[2],             0.0,
+        -lav::dot(right, eye), -lav::dot(upn, eye),  lav::dot(foreward, eye), 1.0
     )
 }
 

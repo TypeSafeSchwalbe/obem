@@ -1,0 +1,3 @@
+
+type Texture = { texture = int }
+proc obem::internal::res::Image::internal_load_image(str, |Texture, int, int| -> unit) = obem_load_image

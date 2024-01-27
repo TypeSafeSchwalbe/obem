@@ -1,0 +1,8 @@
+
+mod obem::gfx::Mesh
+
+use obem::internal::gfx::Mesh::*
+
+pub proc new(data, indices) { return {
+    handle = internal_create_mesh(data, indices)
+} }

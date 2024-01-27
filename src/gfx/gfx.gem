@@ -1,0 +1,32 @@
+
+type Mesh = { mesh = int }
+proc obem::internal::gfx::Mesh::internal_create_mesh([float], [int]) -> Mesh = obem_create_mesh
+
+type Texture = { texture = int }
+proc obem::internal::gfx::Texture::internal_create_texture(int, int) -> Texture = obem_create_texture
+proc obem::internal::gfx::Texture::internal_texture_width(Texture) -> int = obem_texture_width
+proc obem::internal::gfx::Texture::internal_texture_height(Texture) -> int = obem_texture_height
+
+type Shader = { shader = int }
+proc obem::internal::gfx::Shader::internal_create_shader(str, str) -> Shader = obem_create_shader
+proc obem::internal::gfx::Shader::internal_set_uniform_flt(Shader, str, float) = obem_set_uniform_flt
+proc obem::internal::gfx::Shader::internal_set_uniform_flt_arr(Shader, str, [float]) = obem_set_uniform_flt_arr
+proc obem::internal::gfx::Shader::internal_set_uniform_int(Shader, str, int) = obem_set_uniform_int
+proc obem::internal::gfx::Shader::internal_set_uniform_int_arr(Shader, str, [int]) = obem_set_uniform_int_arr
+proc obem::internal::gfx::Shader::internal_set_uniform_vec(Shader, str, [float]) = obem_set_uniform_vec
+proc obem::internal::gfx::Shader::internal_set_uniform_vec_arr(Shader, str, [[float]]) = obem_set_uniform_vec_arr
+type Matrix = { values = [float], width = int, height = int }
+proc obem::internal::gfx::Shader::internal_set_uniform_mat(Shader, str, Matrix) = obem_set_uniform_mat
+proc obem::internal::gfx::Shader::internal_set_uniform_mat_arr(Shader, str, [Matrix]) = obem_set_uniform_mat_arr
+proc obem::internal::gfx::Shader::internal_set_uniform_tex(Shader, str, Texture) = obem_set_uniform_tex
+proc obem::internal::gfx::Shader::internal_set_uniform_tex_arr(Shader, str, [Texture]) = obem_set_uniform_tex_arr
+
+type Surface = { surface = int }
+proc obem::internal::gfx::Surface::internal_main_surface() -> Surface = obem_main_surface
+proc obem::internal::gfx::Surface::internal_create_surface(Texture) -> Surface = obem_create_surface
+proc obem::internal::gfx::Surface::internal_surface_width(Surface) -> int = obem_surface_width
+proc obem::internal::gfx::Surface::internal_surface_height(Surface) -> int = obem_surface_height
+proc obem::internal::gfx::Surface::internal_clear_color(Surface, float, float, float, float) = obem_clear_color
+proc obem::internal::gfx::Surface::internal_clear_depth(Surface, float) = obem_clear_depth
+
+proc obem::internal::gfx::internal_render(Mesh, [int], Shader, bool, Surface) = obem_render

@@ -1,0 +1,21 @@
+
+mod obem::res
+
+use std::(arr, iter)
+
+pub proc on_load(resources, load_callback) {
+    resources
+        |> arr::iter()
+        |> iter::for_each(|res| res .> on_load(|| {
+            case resources |> loaded() -> load_callback()
+        }))
+} 
+
+pub proc loaded(resources) {
+    return resources
+        |> arr::iter()
+        |> iter::map(|res| res .> loaded())
+        |> iter::reduce(|a, b| a && b, true)
+}
+
+

@@ -1,0 +1,27 @@
+
+mod obem::res::Image
+
+use obem::internal::res::Image::*
+use std::opt
+
+pub proc new(path) { return {
+    path = path,
+    data = #none unit,
+    on_load = |self, load_callback| {
+        internal_load_image(self.path, |handle, width, height| {
+            self.data = #some {
+                handle = handle,
+                width = |self| width,
+                height = |self| height
+            }
+            load_callback()
+        })
+        return self
+    },
+    loaded = |self| {
+        return self.data |> opt::is_some()
+    },
+    get = |self| {
+        return self.data |> opt::expect("Should be loaded!")
+    }
+} }

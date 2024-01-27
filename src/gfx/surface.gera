@@ -1,0 +1,29 @@
+
+mod obem::gfx::Surface
+
+use obem::internal::gfx::Surface::*
+
+proc create(handle) { return {
+    handle = handle,
+
+    width = |self| internal_surface_width(self.handle),
+    height = |self| internal_surface_height(self.handle),
+
+    clear_color = |self, r, g, b, a| {
+        internal_clear_color(self.handle, r, g, b, a)
+        return self
+    },
+
+    clear_depth = |self, d| {
+        internal_clear_depth(self.handle, d)
+        return self
+    }
+} }
+
+pub proc main() {
+    return create(internal_main_surface())
+}
+
+pub proc new(texture) {
+    return create(internal_create_surface(texture))
+}

@@ -1,0 +1,58 @@
+
+mod obem::gfx::Shader
+
+use obem::internal::gfx::Shader::*
+
+pub proc new(vertex_src, fragment_src) { return {
+    handle = internal_create_shader(vertex_src, fragment_src),
+
+    set_uniform_flt = |self, name, value| {
+        internal_set_uniform_flt(self.handle, name, value)
+        return self
+    },
+    set_uniform_flt_arr = |self, name, values| {
+        internal_set_uniform_flt_arr(self.handle, name, values)
+        return self
+    },
+
+    set_uniform_int = |self, name, value| {
+        internal_set_uniform_int(self.handle, name, value)
+        return self
+    },
+    set_uniform_int_arr = |self, name, values| {
+        internal_set_uniform_int_arr(self.handle, name, values)
+        return self
+    },
+
+    set_uniform_vec = |self, name, value| {
+        internal_set_uniform_vec(self.handle, name, value)
+        return self
+    },
+    set_uniform_vec_arr = |self, name, values| {
+        internal_set_uniform_vec_arr(self.handle, name, values)
+        return self
+    },
+
+    set_uniform_mat = |self, name, value| {
+        internal_set_uniform_mat(self.handle, name, value)
+        return self
+    },
+    set_uniform_mat_arr = |self, name, values| {
+        internal_set_uniform_mat_arr(self.handle, name, values)
+        return self
+    },
+
+    set_uniform_tex = |self, name, value| {
+        internal_set_uniform_tex(self.handle, name, value.handle)
+        return self
+    },
+    set_uniform_tex_arr = |self, name, values| {
+        case length(values) == 0 -> return self
+        var value_handles = array(values[0].handle, length(values))
+        0..length(value_handles) |> std::iter::for_each(|i| {
+            value_handles[i] = values[i].handle
+        })
+        internal_set_uniform_tex_arr(self.handle, name, value_handles)
+        return self
+    }
+} }

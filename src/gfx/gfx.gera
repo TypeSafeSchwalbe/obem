@@ -1,0 +1,11 @@
+
+mod obem::gfx
+
+use obem::internal::gfx::*
+
+pub proc render(mesh, vertex_property_sizes, shader, depth_test, surface) {
+    internal_render(
+        mesh.handle, vertex_property_sizes, shader.handle, depth_test,
+        surface.handle
+    )
+}
