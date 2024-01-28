@@ -1,0 +1,28 @@
+
+mod obem::res::ObjModel
+
+use obem::internal::res::ObjModel::*
+use obem::gfx::Mesh
+use std::opt
+
+pub var POSITION = "position"
+pub var COLOR = "color"
+pub var NORMAL = "normal"
+pub var UV = "uv"
+
+pub proc new(path, layout) { return {
+    path = path,
+    data = #none unit,
+    load = |self| |load_callback| {
+        internal_load_model(self.path, layout, |values, indices| {
+            self.data = #some Mesh::new(values, indices)
+            load_callback()
+        })
+    },
+    loaded = |self| {
+        return self.data |> opt::is_some()
+    },
+    get = |self| {
+        return self.data |> opt::expect("Should be loaded!")
+    }
+} }

@@ -7,12 +7,11 @@ mod obem::res::Sound
 // pub proc new(path) { return {
 //     path = path,
 //     data = #none unit,
-//     on_load = |self, load_callback| {
+//     load = |self| |load_callback| {
 //         internal_load_sound(self.path, |data| {
 //             self.data = #some data
 //             load_callback()
 //         })
-//         return self
 //     },
 //     loaded = |self| {
 //         return self.data |> opt::is_some()

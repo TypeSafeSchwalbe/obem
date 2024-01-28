@@ -425,10 +425,3 @@ function obem_render(mesh, attrib_sizes, shader, depth_test, surface) {
     gl.useProgram(null);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 }
-
-
-
-
-
-
-

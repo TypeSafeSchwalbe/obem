@@ -1,0 +1,30 @@
+
+mod obem::data
+
+use obem::internal::data::*
+use std::str
+
+pub proc has(key) {
+    return internal_has(key)
+}
+
+pub proc store(value, key) {
+    internal_store(value, key)
+}
+
+pub proc store_default(default_value, key) {
+    case internal_has(key) -> return unit
+    internal_store(default_value, key)
+}
+
+pub proc get(key) {
+    case !internal_has(key) -> "There is no value for the key '_'!"
+        |> str::fmt([key])
+        |> panic()
+    return internal_get(key)
+}
+
+pub proc get_opt(key) {
+    case !internal_has(key) -> return #none unit
+    return #some internal_get(key)
+}

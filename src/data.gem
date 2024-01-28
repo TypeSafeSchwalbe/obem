@@ -1,0 +1,4 @@
+
+proc obem::internal::data::internal_store(str, str) = obem_data_store
+proc obem::internal::data::internal_has(str) -> bool = obem_data_has
+proc obem::internal::data::internal_get(str) -> str = obem_data_get
