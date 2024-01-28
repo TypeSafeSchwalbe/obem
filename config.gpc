@@ -8,5 +8,7 @@ dependencies = [
 ]
 link_js = [
     "src-js/obem.js"
+    "src-js/res.js"
     "src-js/gfx.js"
+    "src-js/data.js"
 ]
