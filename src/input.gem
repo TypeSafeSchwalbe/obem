@@ -1,0 +1,7 @@
+
+proc obem::input::mouse_pos() -> [float] = obem_mouse_pos
+proc obem::internal::input::internal_mouse_button(int) -> bool = obem_mouse_button
+
+proc obem::internal::input::internal_key(str) -> bool = obem_key
+
+proc obem::input::touch_pos() -> [[float]] = obem_touch_pos

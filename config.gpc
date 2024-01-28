@@ -11,4 +11,5 @@ link_js = [
     "src-js/res.js"
     "src-js/gfx.js"
     "src-js/data.js"
+    "src-js/input.js"
 ]

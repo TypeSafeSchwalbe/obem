@@ -11,6 +11,7 @@ const obem = {
         canvas.style.height = "100vh";
         canvas.style.top = "0px";
         canvas.style.left = "0px";
+        canvas.oncontextmenu = e => e.preventDefault();
         document.body.appendChild(canvas);
         this.canvas = canvas;
         this.gl = canvas.getContext("webgl");
@@ -46,7 +47,12 @@ const obem = {
             window.requestAnimationFrame(frame);
         };
         window.requestAnimationFrame(frame);
-    }
+    },
+
+    mouse_pos: [0.0, 0.0],
+    mouse_buttons_pressed: new Map(),
+    keys_pressed: new Map(),
+    touch_pos: []
 };
 
 window.onload = () => {

@@ -1,0 +1,108 @@
+
+mod obem::input
+
+use obem::internal::input::*
+
+
+pub var MOUSE_LEFT = 0
+pub var MOUSE_SCROLL = 1
+pub var MOUSE_RIGHT = 2
+pub var MOUSE_BACK = 3
+pub var MOUSE_FORWARD = 4
+
+pub proc mouse_button(button) {
+    return internal_mouse_button(button)
+}
+
+
+pub var KEY_ESCAPE = "Escape"
+pub var KEY_DIGIT1 = "Digit1"
+pub var KEY_DIGIT2 = "Digit2"
+pub var KEY_DIGIT3 = "Digit3"
+pub var KEY_DIGIT4 = "Digit4"
+pub var KEY_DIGIT5 = "Digit5"
+pub var KEY_DIGIT6 = "Digit6"
+pub var KEY_DIGIT7 = "Digit7"
+pub var KEY_DIGIT8 = "Digit8"
+pub var KEY_DIGIT9 = "Digit9"
+pub var KEY_DIGIT0 = "Digit0"
+pub var KEY_MINUS = "Minus"
+pub var KEY_EQUAL = "Equal"
+pub var KEY_BACKSPACE = "Backspace"
+pub var KEY_TAB = "Tab"
+pub var KEY_Q = "KeyQ"
+pub var KEY_W = "KeyW"
+pub var KEY_E = "KeyE"
+pub var KEY_R = "KeyR"
+pub var KEY_T = "KeyT"
+pub var KEY_Y = "KeyY"
+pub var KEY_U = "KeyU"
+pub var KEY_I = "KeyI"
+pub var KEY_O = "KeyO"
+pub var KEY_P = "KeyP"
+pub var KEY_BRACKET_LEFT = "BracketLeft"
+pub var KEY_BRACKET_RIGHT = "BracketRight"
+pub var KEY_ENTER = "Enter"
+pub var KEY_CONTROL_LEFT = "ControlLeft"
+pub var KEY_A = "KeyA"
+pub var KEY_S = "KeyS"
+pub var KEY_D = "KeyD"
+pub var KEY_F = "KeyF"
+pub var KEY_G = "KeyG"
+pub var KEY_H = "KeyH"
+pub var KEY_J = "KeyJ"
+pub var KEY_K = "KeyK"
+pub var KEY_L = "KeyL"
+pub var KEY_SEMICOLON = "Semicolon"
+pub var KEY_QUOTE = "Quote"
+pub var KEY_BACKQUOTE = "Backquote"
+pub var KEY_SHIFT_LEFT = "ShiftLeft"
+pub var KEY_BACKSLASH = "Backslash"
+pub var KEY_Z = "KeyZ"
+pub var KEY_X = "KeyX"
+pub var KEY_C = "KeyC"
+pub var KEY_V = "KeyV"
+pub var KEY_B = "KeyB"
+pub var KEY_N = "KeyN"
+pub var KEY_M = "KeyM"
+pub var KEY_COMMA = "Comma"
+pub var KEY_PERIOD = "Period"
+pub var KEY_SLASH = "Slash"
+pub var KEY_SHIFT_RIGHT = "ShiftRight"
+pub var KEY_NUMPAD_MULTIPLY = "NumpadMultiply"
+pub var KEY_ALT_LEFT = "AltLeft"
+pub var KEY_SPACE = "Space"
+pub var KEY_CAPS_LOCK = "CapsLock"
+pub var KEY_F1 = "F1"
+pub var KEY_F2 = "F2"
+pub var KEY_F3 = "F3"
+pub var KEY_F4 = "F4"
+pub var KEY_F5 = "F5"
+pub var KEY_F6 = "F6"
+pub var KEY_F7 = "F7"
+pub var KEY_F8 = "F8"
+pub var KEY_F9 = "F9"
+pub var KEY_F10 = "F10"
+pub var KEY_PAUSE = "Pause"
+pub var KEY_SCROLL_LOCK = "ScrollLock"
+pub var KEY_NUMPAD7 = "Numpad7"
+pub var KEY_NUMPAD8 = "Numpad8"
+pub var KEY_NUMPAD9 = "Numpad9"
+pub var KEY_NUMPAD_SUBTRACT = "NumpadSubtract"
+pub var KEY_NUMPAD4 = "Numpad4"
+pub var KEY_NUMPAD5 = "Numpad5"
+pub var KEY_NUMPAD6 = "Numpad6"
+pub var KEY_NUMPAD_ADD = "NumpadAdd"
+pub var KEY_NUMPAD1 = "Numpad1"
+pub var KEY_NUMPAD2 = "Numpad2"
+pub var KEY_NUMPAD3 = "Numpad3"
+pub var KEY_NUMPAD0 = "Numpad0"
+pub var KEY_NUMPAD_DECIMAL = "NumpadDecimal"
+pub var KEY_INTL_BACKSLASH = "IntlBackslash"
+pub var KEY_F11 = "F11"
+pub var KEY_F12 = "F12"
+pub var KEY_NUMPAD_EQUAL = "NumpadEqual"
+
+pub proc key(key) {
+    return internal_key(key)
+}
