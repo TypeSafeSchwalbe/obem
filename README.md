@@ -17,12 +17,12 @@ proc main() {
 }
 
 proc start() {
-    var triangle = Mesh([
+    var triangle = Mesh::new([
         -0.5, -0.5, 0.0,  1.0, 0.2, 0.2,
          0.0,  0.5, 0.0,  0.2, 1.0, 0.2,
          0.5, -0.5, 0.0,  0.2, 0.2, 1.0
     ], [0, 1, 2])
-    var shader = Shader("
+    var shader = Shader::new("
         attribute vec3 coords;
         attribute vec3 color;
         varying vec3 fcolor;
@@ -40,8 +40,8 @@ proc start() {
         }
     ")
     obem::on_frame(|| {
-        main_surface() .> clear_color(1.0, 1.0, 1.0, 1.0)
-        render(triangle, [3, 3], shader, false, main_surface())
+        Surface::main() .> clear_color(1.0, 1.0, 1.0, 1.0)
+        render(triangle, [3, 3], shader, false, Surface::main())
     })
 }
 ```
