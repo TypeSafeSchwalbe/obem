@@ -2,7 +2,13 @@
 mod obem::gfx::Mesh
 
 use obem::internal::gfx::Mesh::*
+use std::opt
 
 pub proc new(data, indices) { return {
-    handle = internal_create_mesh(data, indices)
+    handle_v = #none unit,
+    handle = |self| {
+        case self.handle_v |> opt::is_none()
+            -> self.handle_v = #some internal_create_mesh(data, indices)
+        return self.handle_v |> opt::expect("should exist")
+    }
 } }

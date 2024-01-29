@@ -1,22 +1,25 @@
 
 mod obem::res::Sound
 
-// use obem::internal::res::Sound::*
-// use std::opt
+use obem::internal::res::Sound::*
+use std::opt
 
-// pub proc new(path) { return {
-//     path = path,
-//     data = #none unit,
-//     load = |self| |load_callback| {
-//         internal_load_sound(self.path, |data| {
-//             self.data = #some data
-//             load_callback()
-//         })
-//     },
-//     loaded = |self| {
-//         return self.data |> opt::is_some()
-//     },
-//     get = |self| {
-//         return self.data |> opt::expect("Should be loaded!")
-//     }
-// } }
+pub proc new(path) { return {
+    path = path,
+    data = #none unit,
+    load = |self| |load_callback| {
+        internal_load_sound(self.path, |handle| {
+            self.data = #some {
+                handle_v = #some handle,
+                handle = |self| handle
+            }
+            load_callback()
+        })
+    },
+    loaded = |self| {
+        return self.data |> opt::is_some()
+    },
+    get = |self| {
+        return self.data |> opt::expect("Should be loaded!")
+    }
+} }

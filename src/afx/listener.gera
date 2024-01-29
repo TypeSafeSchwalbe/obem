@@ -1,0 +1,36 @@
+
+mod obem::afx::Listener
+
+use obem::internal::afx::Listener::*
+use obem::lav
+use std::str
+
+var LISTENER_POSITION = [0.0, 0.0, 0.0]
+
+pub proc position(pos) {
+    case length(pos) != 3
+        -> "Expected 3 values for the position, got _ instead!"
+            |> str::fmt([pos |> length() |> as_str()])
+            |> panic()
+    LISTENER_POSITION[0] = pos[0]
+    LISTENER_POSITION[1] = pos[1]
+    LISTENER_POSITION[2] = pos[2]
+    internal_listener_position(pos[0], pos[1], pos[2])
+}
+
+pub proc orientation(look_at, up) {
+    case length(look_at) != 3
+        -> "Expected 3 values for the look at position, got _ instead!"
+            |> str::fmt([look_at |> length() |> as_str()])
+            |> panic()
+    case length(up) != 3
+        -> "Expected 3 values for the up direction, got _ instead!"
+            |> str::fmt([up |> length() |> as_str()])
+            |> panic()
+    var look = look_at
+        |> lav::sub(LISTENER_POSITION)
+        |> lav::norm()
+    internal_listener_orientation(
+        look[0], look[1], look[2], up[0], up[1], up[2]
+    )
+}

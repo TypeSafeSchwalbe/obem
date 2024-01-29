@@ -5,3 +5,6 @@ proc obem::internal::res::Image::internal_load_image(str, |Texture, int, int| ->
 proc obem::internal::res::Text::internal_load_text(str, |str| -> unit) = obem_load_text
 
 proc obem::internal::res::ObjModel::internal_load_model(str, [str], |[float], [int]| -> unit) = obem_load_obj_model
+
+type Audio = { audio = int }
+proc obem::internal::res::Sound::internal_load_sound(str, |Audio| -> unit) = obem_load_sound

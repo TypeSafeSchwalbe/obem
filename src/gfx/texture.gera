@@ -1,19 +1,19 @@
 
-mod obem::gfx::Texture 
+mod obem::gfx::Texture
 
 use obem::internal::gfx::Texture::*
 use std::opt
 
-proc create(handle, width, height) { return {
-    handle = handle,
-    width = width,
-    height = height
-} }
-
 pub proc new(width, height) {
     case width < 0 || height < 0 -> panic("Invalid texture dimensions!")
     return {
-        handle = internal_create_texture(width, height),
+        handle_v = #none unit,
+        handle = |self| {
+            case self.handle_v |> opt::is_none()
+                -> self.handle_v = #some internal_create_texture(width, height)
+            return self.handle_v |> opt::expect("should exist")
+        },
+
         width = |self| width,
         height = |self| height
     }

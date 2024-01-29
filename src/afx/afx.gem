@@ -1,0 +1,16 @@
+
+type Audio = { audio = int }
+
+type Source = { source = int }
+proc obem::internal::afx::Source::internal_create_source() -> Source = obem_create_source
+proc obem::internal::afx::Source::internal_source_position(Source, float, float, float) = obem_source_position
+proc obem::internal::afx::Source::internal_source_gain(Source, float) = obem_source_gain
+proc obem::internal::afx::Source::internal_source_pitch(Source, float) = obem_source_pitch
+proc obem::internal::afx::Source::internal_source_play(Source, Audio) = obem_source_play
+proc obem::internal::afx::Source::internal_source_playing(Source) -> bool = obem_source_playing
+proc obem::internal::afx::Source::internal_source_loop(Source, bool) = obem_source_loop
+proc obem::internal::afx::Source::internal_source_stop(Source) = obem_source_stop
+proc obem::internal::afx::Source::internal_source_on_end(Source, || -> unit) = obem_source_on_end
+
+proc obem::internal::afx::Listener::internal_listener_position(float, float, float) = obem_listener_position
+proc obem::internal::afx::Listener::internal_listener_orientation(float, float, float, float, float, float) = obem_listener_orientation

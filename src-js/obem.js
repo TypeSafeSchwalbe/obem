@@ -21,8 +21,8 @@ const obem = {
 
     enforce_init: function() {
         if(!this.initialized) {
-            throw "Obem has not yet been initialized!"
-                + " (Use 'obem::on_init' to have a function called when Obem is ready.)";
+            throw new Error("Obem has not yet been initialized!"
+                + " (Use 'obem::on_init' to have a function called when Obem is ready.)");
         }
     },
 
@@ -52,7 +52,9 @@ const obem = {
     mouse_pos: [0.0, 0.0],
     mouse_buttons_pressed: new Map(),
     keys_pressed: new Map(),
-    touch_pos: []
+    touch_pos: [],
+
+    al: new (window.AudioContext || window.webkitAudioContext)()
 };
 
 window.onload = () => {

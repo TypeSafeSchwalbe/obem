@@ -10,7 +10,8 @@ pub proc new(path) { return {
     load = |self| |load_callback| {
         internal_load_image(self.path, |handle, width, height| {
             self.data = #some {
-                handle = handle,
+                handle_v = #some handle,
+                handle = |self| handle,
                 width = |self| width,
                 height = |self| height
             }

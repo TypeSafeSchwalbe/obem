@@ -104,8 +104,8 @@ function obem_set_uniform_vec(shader, name, value) {
         case 2: f = (gl, loc) => gl.uniform2f(loc, ...value); break;
         case 3: f = (gl, loc) => gl.uniform3f(loc, ...value); break;
         case 4: f = (gl, loc) => gl.uniform4f(loc, ...value); break;
-        default: throw "Expected a vector with a minimum length of 1 and a maximum length of 4,"
-            + " but got a vector of length " + value.length + " instead!";
+        default: throw new Error("Expected a vector with a minimum length of 1 and a maximum length of 4,"
+            + " but got a vector of length " + value.length + " instead!");
     }
     obem_set_uniform(shader, name, f);
 }
@@ -119,14 +119,14 @@ function obem_set_uniform_vec_arr(shader, name, value) {
         case 2: f = values => (gl, loc) => gl.uniform2fv(loc, values); break;
         case 3: f = values => (gl, loc) => gl.uniform3fv(loc, values); break;
         case 4: f = values => (gl, loc) => gl.uniform4fv(loc, values); break;
-        default: throw "Expected vectors with minimum lengths of 1 and maximum lengths of 4,"
-            + " but got vectors of length " + value.length + " instead!";
+        default: throw new Error("Expected vectors with minimum lengths of 1 and maximum lengths of 4,"
+            + " but got vectors of length " + value.length + " instead!");
     }
     let values = [];
     for(const vector of value) {
         if(vector.length !== l) {
-            throw "Expected all vectors to have the same length,"
-                + " but got vectors with length " + l + " and " + vector.length + "!";
+            throw new Error("Expected all vectors to have the same length,"
+                + " but got vectors with length " + l + " and " + vector.length + "!");
         }
         values.push(...vector);
     }
@@ -135,16 +135,16 @@ function obem_set_uniform_vec_arr(shader, name, value) {
 
 function obem_set_uniform_mat(shader, name, value) {
     if(value.width !== value.height) {
-        throw "Expected a square matrix of size 2, 3 or 4,"
-            + " but got a matrix of size " + value.height + "x" + value.width + "!";
+        throw new Error("Expected a square matrix of size 2, 3 or 4,"
+            + " but got a matrix of size " + value.height + "x" + value.width + "!");
     }
     let f;
     switch(value.width) {
         case 2n: f = (gl, loc) => gl.uniformMatrix2fv(loc, false, value.values); break;
         case 3n: f = (gl, loc) => gl.uniformMatrix3fv(loc, false, value.values); break;
         case 4n: f = (gl, loc) => gl.uniformMatrix4fv(loc, false, value.values); break;
-        default: throw "Expected a square matrix of size 2, 3 or 4,"
-            + " but got a matrix of size " + value.height + "x" + value.width + "!";
+        default: throw new Error("Expected a square matrix of size 2, 3 or 4,"
+            + " but got a matrix of size " + value.height + "x" + value.width + "!");
     }
     obem_set_uniform(shader, name, f);
 }
@@ -152,8 +152,8 @@ function obem_set_uniform_mat(shader, name, value) {
 function obem_set_uniform_mat_arr(shader, name, value) {
     if(value.length === 0) { return; }
     if(value[0].width !== value[0].height) {
-        throw "Expected square matrices of size 2, 3 or 4,"
-            + " but got a matrix of size " + value[0].height + "x" + value[0].width + "!";
+        throw new Error("Expected square matrices of size 2, 3 or 4,"
+            + " but got a matrix of size " + value[0].height + "x" + value[0].width + "!");
     }
     let l = value[0].width;
     let f;
@@ -161,15 +161,15 @@ function obem_set_uniform_mat_arr(shader, name, value) {
         case 2n: f = values => (gl, loc) => gl.uniformMatrix2fv(loc, false, values); break;
         case 3n: f = values => (gl, loc) => gl.uniformMatrix3fv(loc, false, values); break;
         case 4n: f = values => (gl, loc) => gl.uniformMatrix4fv(loc, false, values); break;
-        default: throw "Expected square matrices of size 2, 3 or 4,"
-            + " but got a matrix of size " + value[0].height + "x" + value[0].width + "!";
+        default: throw new Error("Expected square matrices of size 2, 3 or 4,"
+            + " but got a matrix of size " + value[0].height + "x" + value[0].width + "!");
     }
     let values = [];
     for(const matrix of value) {
         if(matrix.width !== l || matrix.height !== l) {
-            throw "Expected all matrices to have the same dimensions,"
+            throw new Error("Expected all matrices to have the same dimensions,"
                 + " but got matrices with size " + l + "x" + l
-                + " and " + matrix.height + "x" + matrix.width + "!";
+                + " and " + matrix.height + "x" + matrix.width + "!");
         }
         values.push(...matrix.values);
     }
@@ -178,7 +178,7 @@ function obem_set_uniform_mat_arr(shader, name, value) {
 
 function obem_allocate_texture_slot(shader, texture) {
     if(!("textures" in shader)) {
-        throw "The given shader is invalid!";
+        throw new Error("The given shader is invalid!");
     }
     let slot = shader.textures.slots.indexOf(texture);
     if(slot !== -1) { return slot; }

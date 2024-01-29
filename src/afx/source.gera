@@ -1,0 +1,66 @@
+
+mod obem::afx::Source
+
+use obem::internal::afx::Source::*
+use std::(opt, str)
+
+pub proc new(pos) { return {
+    handle_v = #none unit,
+    handle = |self| {
+        case self.handle_v |> opt::is_none() -> {
+            self.handle_v = #some internal_create_source()
+            self .> position(pos)
+        } 
+        return self.handle_v |> opt::expect("should exist")
+    },
+
+    position = |self, pos| {
+        case length(pos) != 3
+            -> "Expected 3 values for the position, got _ instead!"
+                |> str::fmt([pos |> length() |> as_str()])
+                |> panic()
+        self .> handle()
+            |> internal_source_position(pos[0], pos[1], pos[2])
+        return self
+    },
+
+    gain = |self, gain| {
+        self .> handle()
+            |> internal_source_gain(gain)
+        return self
+    },
+
+    pitch = |self, pitch| {
+        self .> handle()
+            |> internal_source_pitch(pitch)
+        return self
+    },
+
+    play = |self, audio| {
+        self .> handle()
+            |> internal_source_play(audio .> handle())
+        return self
+    },
+
+    playing = |self| {
+        return self .> handle() |> internal_source_playing()
+    },
+
+    loop = |self, loop| {
+        self .> handle()
+            |> internal_source_loop(loop)
+        return self
+    },
+
+    stop = |self| {
+        self .> handle()
+            |> internal_source_stop()
+        return self
+    },
+
+    on_end = |self, handler| {
+        self .> handle()
+            |> internal_source_on_end(handler)
+        return self
+    }
+} }

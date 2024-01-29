@@ -11,13 +11,13 @@ function obem_load_image(path, callback) {
 function obem_load_text(path, callback) {
     fetch(path)
         .then(r => r.text())
-        .then(t => callback.call(t))
+        .then(t => callback.call(t));
 }
 
 function obem_load_obj_model(path, layout, callback) {
     fetch(path)
         .then(r => r.text())
-        .then(obem_parse_obj_model(layout, callback))
+        .then(obem_parse_obj_model(layout, callback));
 }
 
 const obem_parse_obj_model = (layout, callback) => src => {
@@ -77,7 +77,7 @@ const obem_parse_obj_model = (layout, callback) => src => {
                 switch(attribute_t) {
                     case "position":
                         if(vertex[0] === undefined) {
-                            throw "Layout expects position, but face doesn't contain any!";
+                            throw new Error("Layout expects position, but face doesn't contain any!");
                         }
                         i = vertex[0];
                         if(i > vertices.length) { throw `${i} is not a valid vertex index!`; }
@@ -85,33 +85,39 @@ const obem_parse_obj_model = (layout, callback) => src => {
                         break;
                     case "color":
                         if(vertex[0] === undefined) {
-                            throw "Layout expects color, but face doesn't contain any!";
+                            throw new Error("Layout expects color, but face doesn't contain any!");
                         }
                         i = vertex[0];
-                        if(i > vertices.length) { throw `${i} is not a valid vertex index!`; }
+                        if(i > vertices.length) {
+                            throw new Error(`${i} is not a valid vertex index!`);
+                        }
                         if(vertices[i - 1].length !== 6) {
-                            throw `Vertex ${i} does not hold color information!`;
+                            throw new Error(`Vertex ${i} does not hold color information!`);
                         }
                         vertex_values.push(...vertices[i - 1].slice(3));
                         break;
                     case "uv":
                         if(vertex[1] === undefined) {
-                            throw "Layout expects uv, but face doesn't contain any!";
+                            throw new Error("Layout expects uv, but face doesn't contain any!");
                         }
                         i = vertex[1];
-                        if(i > uvs.length) { throw `${i} is not a valid uv index!`; }
+                        if(i > uvs.length) {
+                            throw new Error(`${i} is not a valid uv index!`);
+                        }
                         vertex_values.push(...uvs[i - 1]);
                         break;
                     case "normal":
                         if(vertex[2] === undefined) {
-                            throw "Layout expects normal, but face doesn't contain any!";
+                            throw new Error("Layout expects normal, but face doesn't contain any!");
                         }
                         i = vertex[2];
-                        if(i > normals.length) { throw `${i} is not a valid normal index!`; }
+                        if(i > normals.length) {
+                            throw new Error(`${i} is not a valid normal index!`);
+                        }
                         vertex_values.push(...normals[i - 1]);
                         break;
-                    default: throw `Invalid layout attribute value '${attribute_t}'`
-                            + " (must be 'position', 'color', 'normal' or 'uv')!";
+                    default: throw new Error(`Invalid layout attribute value '${attribute_t}'`
+                            + " (must be 'position', 'color', 'normal' or 'uv')!");
                 }
             }
             let index = next_idx;
@@ -135,3 +141,9 @@ const obem_parse_obj_model = (layout, callback) => src => {
     }
     return callback.call(values, indices);
 };
+
+function obem_load_sound(path, callback) {
+    fetch(path)
+        .then(r => r.arrayBuffer())
+        .then(b => obem_audio_from_buffer(b, b => callback.call(b)));
+}
