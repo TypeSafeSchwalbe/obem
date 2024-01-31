@@ -10,7 +10,7 @@ Below is a simple triangle example, and what it looks like when viewed in a web 
 ```
 mod example
 
-use obem::gfx::*
+use obem::gfx::(Mesh, Shader, Surface)
 
 proc main() {
     obem::on_init(start)
@@ -40,8 +40,9 @@ proc start() {
         }
     ")
     obem::on_frame(|| {
-        Surface::main() .> clear_color(1.0, 1.0, 1.0, 1.0)
-        render(triangle, [3, 3], shader, false, Surface::main())
+        Surface::main()
+            .> clear_color(1.0, 1.0, 1.0, 1.0)
+            .> draw(triangle, [3, 3], shader, false)
     })
 }
 ```
