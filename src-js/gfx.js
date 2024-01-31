@@ -357,8 +357,7 @@ function obem_clear_depth(surface, d) {
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 }
 
-
-function obem_render(mesh, attrib_sizes, shader, depth_test, surface) {
+function obem_draw(surface, mesh, attrib_sizes, shader, depth_test) {
     obem.enforce_init();
     const gl = obem.gl;
     if(depth_test === true) { gl.enable(gl.DEPTH_TEST); }
