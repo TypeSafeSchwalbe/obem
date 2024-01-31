@@ -2,6 +2,7 @@
 mod obem::gfx::Surface
 
 use obem::internal::gfx::Surface::*
+use obem::gfx::(Shader, Mesh)
 use std::opt
 
 proc create(handle_f) { return {
@@ -26,6 +27,17 @@ proc create(handle_f) { return {
     clear_depth = |self, d| {
         self .> handle()
             |> internal_clear_depth(d)
+        return self
+    },
+
+    draw = |self, mesh, vertex_property_sizes, shader, depth_test| {
+        self .> handle()
+            |> internal_draw(
+                mesh .> handle(),
+                vertex_property_sizes,
+                shader .> handle(),
+                depth_test
+            )
         return self
     }
 } }

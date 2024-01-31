@@ -28,5 +28,4 @@ proc obem::internal::gfx::Surface::internal_surface_width(Surface) -> int = obem
 proc obem::internal::gfx::Surface::internal_surface_height(Surface) -> int = obem_surface_height
 proc obem::internal::gfx::Surface::internal_clear_color(Surface, float, float, float, float) = obem_clear_color
 proc obem::internal::gfx::Surface::internal_clear_depth(Surface, float) = obem_clear_depth
-
-proc obem::internal::gfx::internal_render(Mesh, [int], Shader, bool, Surface) = obem_render
+proc obem::internal::gfx::Surface::internal_draw(Surface, Mesh, [int], Shader, bool) = obem_draw
