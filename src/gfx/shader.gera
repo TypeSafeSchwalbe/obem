@@ -12,14 +12,14 @@ pub proc new(vertex_src, fragment_src) { return {
         return self.handle_v |> opt::expect("should exist")
     },
 
-    set_uniform_flt = |self, name, value| {
+    uniform_flt = |self, name, value| {
         internal_set_uniform_flt(
             self .> handle(),
             name, value
         )
         return self
     },
-    set_uniform_flt_arr = |self, name, values| {
+    uniform_flt_arr = |self, name, values| {
         internal_set_uniform_flt_arr(
             self .> handle(),
             name, values
@@ -27,14 +27,14 @@ pub proc new(vertex_src, fragment_src) { return {
         return self
     },
 
-    set_uniform_int = |self, name, value| {
+    uniform_int = |self, name, value| {
         internal_set_uniform_int(
             self .> handle(),
             name, value
         )
         return self
     },
-    set_uniform_int_arr = |self, name, values| {
+    uniform_int_arr = |self, name, values| {
         internal_set_uniform_int_arr(
             self .> handle(),
             name, values
@@ -42,14 +42,14 @@ pub proc new(vertex_src, fragment_src) { return {
         return self
     },
 
-    set_uniform_vec = |self, name, value| {
+    uniform_vec = |self, name, value| {
         internal_set_uniform_vec(
             self .> handle(),
             name, value
         )
         return self
     },
-    set_uniform_vec_arr = |self, name, values| {
+    uniform_vec_arr = |self, name, values| {
         internal_set_uniform_vec_arr(
             self .> handle(),
             name, values
@@ -57,14 +57,14 @@ pub proc new(vertex_src, fragment_src) { return {
         return self
     },
 
-    set_uniform_mat = |self, name, value| {
+    uniform_mat = |self, name, value| {
         internal_set_uniform_mat(
             self .> handle(),
             name, value
         )
         return self
     },
-    set_uniform_mat_arr = |self, name, values| {
+    uniform_mat_arr = |self, name, values| {
         internal_set_uniform_mat_arr(
             self .> handle(),
             name, values
@@ -72,7 +72,7 @@ pub proc new(vertex_src, fragment_src) { return {
         return self
     },
 
-    set_uniform_tex = |self, name, value| {
+    uniform_tex = |self, name, value| {
         internal_set_uniform_tex(
             self .> handle(),
             name,
@@ -80,7 +80,7 @@ pub proc new(vertex_src, fragment_src) { return {
         )
         return self
     },
-    set_uniform_tex_arr = |self, name, values| {
+    uniform_tex_arr = |self, name, values| {
         case length(values) == 0 -> return self
         var value_handles = array(values[0] .> handle(), length(values))
         0..length(value_handles) |> std::iter::for_each(|i| {
