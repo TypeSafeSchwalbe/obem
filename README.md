@@ -42,7 +42,7 @@ proc start() {
     obem::on_frame(|| {
         Surface::main()
             .> clear_color(1.0, 1.0, 1.0, 1.0)
-            .> draw(triangle, [3, 3], shader, false)
+            .> draw_mesh(triangle, [3, 3], shader, false)
     })
 }
 ```
