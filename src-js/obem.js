@@ -15,6 +15,8 @@ const obem = {
         document.body.appendChild(canvas);
         this.canvas = canvas;
         this.gl = canvas.getContext("webgl");
+        this.gl.enable(this.gl.BLEND)
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         this.initialized = true;
         for(const c of this.init_callbacks) { c(); }
     },

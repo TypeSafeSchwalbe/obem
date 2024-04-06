@@ -102,6 +102,10 @@ pub var KEY_INTL_BACKSLASH = "IntlBackslash"
 pub var KEY_F11 = "F11"
 pub var KEY_F12 = "F12"
 pub var KEY_NUMPAD_EQUAL = "NumpadEqual"
+pub var KEY_ARROW_LEFT = "ArrowLeft"
+pub var KEY_ARROW_RIGHT = "ArrowRight"
+pub var KEY_ARROW_UP = "ArrowUp"
+pub var KEY_ARROW_DOWN = "ArrowDown"
 
 pub proc key(key) {
     return internal_key(key)

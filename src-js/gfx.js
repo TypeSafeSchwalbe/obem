@@ -183,8 +183,8 @@ function obem_allocate_texture_slot(shader, texture) {
     let slot = shader.textures.slots.indexOf(texture);
     if(slot !== -1) { return slot; }
     slot = shader.textures.next_slot;
-    shader.textures.next_slot = (shader.textures.next_slot + 1) 
-        % shader.textures.slots.length;
+    shader.textures.next_slot += 1;
+    shader.textures.next_slot %= shader.textures.slots.length;
     shader.textures.slots[slot] = texture;
     return slot;
 } 
@@ -375,7 +375,6 @@ function obem_draw(surface, mesh, attrib_sizes, shader, depth_test) {
     for(let slot = 0; slot < shader.textures.slots.length; slot += 1) {
         const tex = shader.textures.slots[slot];
         if(tex === undefined) { break; }
-        gl.bindTexture(gl.TEXTURE_2D, null);
         gl.activeTexture(gl.TEXTURE0 + slot);
         gl.bindTexture(gl.TEXTURE_2D, tex);
     }
