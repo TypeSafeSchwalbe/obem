@@ -27,8 +27,8 @@ pub proc orientation(look_at, up) {
         -> "Expected 3 values for the up direction, got _ instead!"
             |> str::fmt([up |> length() |> as_str()])
             |> panic()
-    var look = look_at
-        |> lav::sub(LISTENER_POSITION)
+    var look = LISTENER_POSITION
+        |> lav::sub(look_at)
         |> lav::norm()
     internal_listener_orientation(
         look[0], look[1], look[2], up[0], up[1], up[2]
