@@ -4,7 +4,7 @@ mod obem::res
 use std::(arr, iter)
 
 pub proc on_load(res_loads, load_callback) {
-    var loaded = array(false, length(res_loads))
+    var loaded = [false; length(res_loads)]
     0..length(res_loads) |> iter::for_each(|i| res_loads[i](|| {
         loaded[i] = true
         case loaded |> arr::iter() |> iter::reduce(|a, b| a && b, true) -> {

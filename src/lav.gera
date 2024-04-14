@@ -4,7 +4,7 @@ use std::(math, iter, arr, str)
 use obem::lam
 
 pub proc add(a, b) {
-    var r = array(0.0, math::min(length(a), length(b)))
+    var r = [0.0; math::min(length(a), length(b))]
     0..length(r) |> iter::for_each(|i| {
         r[i] = a[i] + b[i]
     })
@@ -12,7 +12,7 @@ pub proc add(a, b) {
 }
 
 pub proc sub(a, b) {
-    var r = array(0.0, math::min(length(a), length(b)))
+    var r = [0.0; math::min(length(a), length(b))]
     0..length(r) |> iter::for_each(|i| {
         r[i] = a[i] - b[i]
     })
@@ -20,7 +20,7 @@ pub proc sub(a, b) {
 }
 
 pub proc mul(a, b) {
-    var r = array(0.0, math::min(length(a), length(b)))
+    var r = [0.0; math::min(length(a), length(b))]
     0..length(r) |> iter::for_each(|i| {
         r[i] = a[i] * b[i]
     })
@@ -28,7 +28,7 @@ pub proc mul(a, b) {
 }
 
 pub proc div(a, b) {
-    var r = array(0.0, math::min(length(a), length(b)))
+    var r = [0.0; math::min(length(a), length(b))]
     0..length(r) |> iter::for_each(|i| {
         r[i] = a[i] / b[i]
     })
@@ -36,7 +36,7 @@ pub proc div(a, b) {
 }
 
 pub proc neg(v) {
-    var r = array(0.0, length(v))
+    var r = [0.0; length(v)]
     0..length(r) |> iter::for_each(|i| {
         r[i] = -v[i]
     })

@@ -13,7 +13,7 @@ proc new(values, height, width) {
 
 proc new_empty(height, width) {
     return {
-        values = array(0.0, height * width),
+        values = [0.0; height * width],
         height = height,
         width = width
     }
