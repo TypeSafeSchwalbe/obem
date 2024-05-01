@@ -166,7 +166,7 @@ proc set_at(value, m, row_idx, column_idx) {
 }
 
 pub proc row(m, row_idx) {
-    var r = array(0.0, m.width)
+    var r = [0.0; m.width]
     0..m.width |> iter::for_each(|column_idx| {
         r[column_idx] = m |> u_at(row_idx, column_idx)
     })
