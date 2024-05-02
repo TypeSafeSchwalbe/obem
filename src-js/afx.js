@@ -110,7 +110,7 @@ function obem_source_play(source, audio) {
     source_node.onended = () => {
         src.playing = src.loop;
         for(const handler of src.end_handlers) {
-            handler.call();
+            handler();
         }
     };
     src.source_node = source_node;
