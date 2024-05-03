@@ -4,7 +4,7 @@ use std::(math, iter, arr, str)
 use obem::lam
 
 pub proc add(a, b) {
-    var r = [0.0; math::min(length(a), length(b))]
+    val r = [0.0; math::min(length(a), length(b))]
     0..length(r) |> iter::for_each(|i| {
         r[i] = a[i] + b[i]
     })
@@ -12,7 +12,7 @@ pub proc add(a, b) {
 }
 
 pub proc sub(a, b) {
-    var r = [0.0; math::min(length(a), length(b))]
+    val r = [0.0; math::min(length(a), length(b))]
     0..length(r) |> iter::for_each(|i| {
         r[i] = a[i] - b[i]
     })
@@ -20,7 +20,7 @@ pub proc sub(a, b) {
 }
 
 pub proc mul(a, b) {
-    var r = [0.0; math::min(length(a), length(b))]
+    val r = [0.0; math::min(length(a), length(b))]
     0..length(r) |> iter::for_each(|i| {
         r[i] = a[i] * b[i]
     })
@@ -28,7 +28,7 @@ pub proc mul(a, b) {
 }
 
 pub proc div(a, b) {
-    var r = [0.0; math::min(length(a), length(b))]
+    val r = [0.0; math::min(length(a), length(b))]
     0..length(r) |> iter::for_each(|i| {
         r[i] = a[i] / b[i]
     })
@@ -36,7 +36,7 @@ pub proc div(a, b) {
 }
 
 pub proc neg(v) {
-    var r = [0.0; length(v)]
+    val r = [0.0; length(v)]
     0..length(r) |> iter::for_each(|i| {
         r[i] = -v[i]
     })
@@ -44,7 +44,7 @@ pub proc neg(v) {
 }
 
 pub proc scale(v, f) {
-    var r = v |> arr::clone()
+    val r = v |> arr::clone()
     0..length(r) |> iter::for_each(|i| {
         r[i] = r[i] * f
     })
@@ -81,7 +81,7 @@ but got vectors of lengths _ and _ instead!"
 }
 
 pub proc norm(v) {
-    var l = v |> len()
+    val l = v |> len()
     case l == 0.0 -> return v
     return v |> scale(1.0 / l)
 }
@@ -96,7 +96,7 @@ but got a vector with _ elements and a _x_ matrix!"
             ])
             |> panic()
     }
-    var r = v |> arr::clone()
+    val r = v |> arr::clone()
     0..m.width |> iter::for_each(|column_idx| {
         r[column_idx] = dot(v, m |> lam::column(column_idx))
     })

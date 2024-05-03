@@ -5,7 +5,7 @@ use obem::internal::afx::Listener::*
 use obem::lav
 use std::str
 
-var LISTENER_POSITION = [0.0, 0.0, 0.0]
+val LISTENER_POSITION = [0.0, 0.0, 0.0]
 
 pub proc position(pos) {
     case length(pos) != 3
@@ -27,7 +27,7 @@ pub proc orientation(look_at, up) {
         -> "Expected 3 values for the up direction, got _ instead!"
             |> str::fmt([up |> length() |> as_str()])
             |> panic()
-    var look = LISTENER_POSITION
+    val look = LISTENER_POSITION
         |> lav::sub(look_at)
         |> lav::norm()
     internal_listener_orientation(

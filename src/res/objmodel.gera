@@ -5,10 +5,10 @@ use obem::internal::res::ObjModel::*
 use obem::gfx::Mesh
 use std::opt
 
-pub var POSITION = "position"
-pub var COLOR = "color"
-pub var NORMAL = "normal"
-pub var UV = "uv"
+pub val POSITION = "position"
+pub val COLOR = "color"
+pub val NORMAL = "normal"
+pub val UV = "uv"
 
 pub proc new(path, layout) { return {
     path = path,

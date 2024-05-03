@@ -82,7 +82,7 @@ pub proc new(vertex_src, fragment_src) { return {
     },
     uniform_tex_arr = |self, name, values| {
         case length(values) == 0 -> return self
-        var value_handles = [values[0] .> handle(); length(values)]
+        val value_handles = [values[0] .> handle(); length(values)]
         0..length(value_handles) |> std::iter::for_each(|i| {
             value_handles[i] = values[i] .> handle()
         })

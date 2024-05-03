@@ -13,7 +13,7 @@ pub proc new(pos) {
         handle_v = #none unit,
         handle = |self| {
             case self.handle_v |> opt::is_none() -> {
-                var h = internal_create_source()
+                val h = internal_create_source()
                 h |> internal_source_position(pos[0], pos[1], pos[2])
                 self.handle_v = #some h
             } 
