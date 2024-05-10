@@ -66,14 +66,14 @@ window.onload = () => {
 
 function obem_on_init(init_callback) {
     if(obem.canvas !== null) {
-        init_callback.call();
+        init_callback();
         return;
     }
-    obem.init_callbacks.push(() => init_callback.call());
+    obem.init_callbacks.push(init_callback);
 }
 
 function obem_on_frame(frame_callback) {
-    obem.frame_callbacks.push(() => frame_callback.call());
+    obem.frame_callbacks.push(frame_callback);
 }
 
 function obem_delta_time() {

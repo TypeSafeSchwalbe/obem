@@ -1,7 +1,7 @@
 
 function obem_load_image(path, callback) {
     var img = new Image();
-    img.onload = () => callback.call(
+    img.onload = () => callback(
         obem_texture_from_image(img),
         BigInt(img.width), BigInt(img.height)
     );
@@ -11,7 +11,7 @@ function obem_load_image(path, callback) {
 function obem_load_text(path, callback) {
     fetch(path)
         .then(r => r.text())
-        .then(t => callback.call(t));
+        .then(callback);
 }
 
 function obem_load_obj_model(path, layout, callback) {
@@ -139,11 +139,11 @@ const obem_parse_obj_model = (layout, callback) => src => {
             indices.push(BigInt(index));
         }
     }
-    return callback.call(values, indices);
+    return callback(values, indices);
 };
 
 function obem_load_sound(path, callback) {
     fetch(path)
         .then(r => r.arrayBuffer())
-        .then(b => obem_audio_from_buffer(b, b => callback.call(b)));
+        .then(b => obem_audio_from_buffer(b, callback));
 }

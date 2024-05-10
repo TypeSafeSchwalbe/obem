@@ -13,10 +13,6 @@ pub proc new(path) { return {
             load_callback()
         })
     },
-    loaded = |self| {
-        return self.data |> opt::is_some()
-    },
-    get = |self| {
-        return self.data |> opt::expect("Should be loaded!")
-    }
+    loaded = |self| self.data |> opt::is_some(),
+    get = |self| self.data |> opt::expect("Should be loaded!")
 } }
