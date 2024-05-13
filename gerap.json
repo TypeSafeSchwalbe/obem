@@ -1,0 +1,9 @@
+{
+    "name": "obem",
+    "description": "A library for 3D browser games.",
+    "authors": ["TypeSafeSchwalbe"],
+    "target": "js",
+    "dependencies": [
+        "https://github.com/geralang/std"
+    ]
+}
