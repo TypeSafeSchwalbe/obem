@@ -1,7 +1,7 @@
-mod obem::lam
+mod obem::mat
 
 use std::(arr, iter, math, str)
-use obem::lav
+use obem::vec
 
 proc new(values, height, width) {
     return {
@@ -212,7 +212,7 @@ pub proc mul(a, b) {
     val r = new_empty(r_height, r_width)
     0..r_height |> iter::for_each(|row_idx| {
         0..r_width |> iter::for_each(|column_idx| {
-            lav::dot(a |> column(column_idx), b |> row(row_idx))
+            vec::dot(a |> column(column_idx), b |> row(row_idx))
                 |> set_at(r, row_idx, column_idx)
         })
     })
@@ -312,10 +312,10 @@ pub proc ortho(left, right, bottom, top, near_plane, far_plane) {
     val m31 = (top + bottom) / (bottom - top)
     val m32 = (far_plane + near_plane) / (near_plane - far_plane)
     return new4x4(
-        m00, 0.0, 0.0, 0.0,
-        0.0, m11, 0.0, 0.0,
-        0.0, 0.0, m22, 0.0,
-        m30, m31, m32, 1.0
+        m00, 0.0, 0.0, m30,
+        0.0, m11, 0.0, m31,
+        0.0, 0.0, m22, m32,
+        0.0, 0.0, 0.0, 1.0
     )
 }
 
@@ -333,14 +333,14 @@ pub proc perspective(fov, aspect_ratio, near_plane, far_plane) {
 }
 
 pub proc look_at(eye, at, up) {
-    val foreward = lav::sub(at, eye) |> lav::norm()
-    val right = up |> lav::cross(foreward) |> lav::norm()
-    val upn = foreward |> lav::cross(right)
+    val foreward = vec::sub(at, eye) |> vec::norm()
+    val right = up |> vec::cross(foreward) |> vec::norm()
+    val upn = foreward |> vec::cross(right)
     return new4x4(
          right[0],              upn[0],             -foreward[0],             0.0,
          right[1],              upn[1],             -foreward[1],             0.0,
          right[2],              upn[2],             -foreward[2],             0.0,
-        -lav::dot(right, eye), -lav::dot(upn, eye),  lav::dot(foreward, eye), 1.0
+        -vec::dot(right, eye), -vec::dot(upn, eye),  vec::dot(foreward, eye), 1.0
     )
 }
 

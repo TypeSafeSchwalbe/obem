@@ -1,7 +1,7 @@
-mod obem::lav
+mod obem::vec
 
 use std::(math, iter, arr, str)
-use obem::lam
+use obem::mat
 
 pub proc add(a, b) {
     val r = [0.0; math::min(length(a), length(b))]
@@ -98,7 +98,7 @@ but got a vector with _ elements and a _x_ matrix!"
     }
     val r = v |> arr::clone()
     0..m.width |> iter::for_each(|column_idx| {
-        r[column_idx] = dot(v, m |> lam::column(column_idx))
+        r[column_idx] = dot(v, m |> mat::column(column_idx))
     })
     return r
 }

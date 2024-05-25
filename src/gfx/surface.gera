@@ -45,60 +45,39 @@ proc create(handle_f) { return {
     },
 
     draw_rect = |self, pos, size, transform, color| {
-        val rect_mesh = static { value = #none unit }
-        case rect_mesh.value |> opt::is_none()
-            // [1]-----[3]
-            //  |   ___/|
-            //  | /     |
-            // [0]-----[2]
-            -> rect_mesh.value = #some Mesh::new([
-                0.0, 0.0, // [0] bottom left
-                0.0, 1.0, // [1] top left
-                1.0, 0.0, // [2] bottom right
-                1.0, 1.0  // [3] top right
-            ], [0, 3, 1, 0, 2, 3])
-        val rect_shader = static { value = #none unit }
-        case rect_shader.value |> opt::is_none()
-            -> rect_shader.value = #some Shader::new("
-                attribute vec2 pos;
-                uniform vec2 offset;
-                uniform vec2 size;
-                uniform mat4 transform;
-                void main(void) {
-                    gl_Position = transform * vec4(
-                        offset + pos * size, 0.0, 1.0
-                    );
-                }
-            ", "
-                precision highp float;
-                uniform vec4 color;
-                void main(void) {
-                    gl_FragColor = color;
-                }
-            ")
-        val m = rect_mesh.value |> opt::expect("just enforced")
-        val s = rect_shader.value |> opt::expect("just enforced")
-        case length(pos) != 2 -> "'pos' has _ components, but must have 2!"
-            |> str::fmt([pos |> length() |> as_str()])
-            |> panic()
-        case length(size) != 2 -> "'size' has _ components, but must have 2!"
-            |> str::fmt([size |> length() |> as_str()])
-            |> panic()
-        case length(color) != 4 -> "'color' has _ components, but must have 4!"
-            |> str::fmt([color |> length() |> as_str()])
-            |> panic()
-        case transform.height != 4 || transform.width != 4
-            -> "'transform' is a _x_ matrix, but must be a 4x4 matrix!"
-                |> str::fmt([
-                    transform.height |> as_str(),
-                    transform.width |> as_str()
-                ])
-                |> panic()
-        s .> uniform_vec("offset", pos)
+        val rect_mesh = static Mesh::new([
+            0.0, 0.0, // [0] bottom left
+            0.0, 1.0, // [1] top left
+            1.0, 0.0, // [2] bottom right
+            1.0, 1.0  // [3] top right
+        ], [0, 3, 1, 0, 2, 3])
+        val rect_shader = static Shader::new("
+            attribute vec2 pos;
+            uniform vec2 offset;
+            uniform vec2 size;
+            uniform mat4 transform;
+            void main(void) {
+                gl_Position = transform * vec4(
+                    offset + pos * size, 0.0, 1.0
+                );
+            }
+        ", "
+            precision highp float;
+            uniform vec4 color;
+            void main(void) {
+                gl_FragColor = color;
+            }
+        ")
+        case length(pos) != 2 -> panic("'pos' must have 2 components!")
+        case length(size) != 2 -> panic("'size' must have 2 components!")
+        case length(color) != 4 -> panic("'color' must have 4 components!")
+        case transform.width != 4 || transform.height != 4
+            -> panic("'transform' must be a 4x4 matrix!")
+        rect_shader .> uniform_vec("offset", pos)
             .> uniform_vec("size", size)
             .> uniform_vec("color", color)
             .> uniform_mat("transform", transform)
-        self .> draw_mesh(m, [2], s, false)
+        self .> draw_mesh(rect_mesh, [2], rect_shader, false)
         return self
     }
 } }

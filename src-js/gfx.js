@@ -135,16 +135,20 @@ function obem_set_uniform_vec_arr(shader, name, value) {
 
 function obem_set_uniform_mat(shader, name, value) {
     if(value.width !== value.height) {
-        throw new Error("Expected a square matrix of size 2, 3 or 4,"
-            + " but got a matrix of size " + value.height + "x" + value.width + "!");
+        throw "Expected a square matrix of size 2, 3 or 4!";
     }
     let f;
     switch(value.width) {
-        case 2n: f = (gl, loc) => gl.uniformMatrix2fv(loc, false, value.values); break;
-        case 3n: f = (gl, loc) => gl.uniformMatrix3fv(loc, false, value.values); break;
-        case 4n: f = (gl, loc) => gl.uniformMatrix4fv(loc, false, value.values); break;
-        default: throw new Error("Expected a square matrix of size 2, 3 or 4,"
-            + " but got a matrix of size " + value.height + "x" + value.width + "!");
+        case 2n: 
+            f = (gl, loc) => gl.uniformMatrix2fv(loc, false, value.values); 
+            break;
+        case 3n: 
+            f = (gl, loc) => gl.uniformMatrix3fv(loc, false, value.values); 
+            break;
+        case 4n: 
+            f = (gl, loc) => gl.uniformMatrix4fv(loc, false, value.values); 
+            break;
+        default: throw new Error("Expected a square matrix of size 2, 3 or 4!");
     }
     obem_set_uniform(shader, name, f);
 }
@@ -152,28 +156,29 @@ function obem_set_uniform_mat(shader, name, value) {
 function obem_set_uniform_mat_arr(shader, name, value) {
     if(value.length === 0) { return; }
     if(value[0].width !== value[0].height) {
-        throw new Error("Expected square matrices of size 2, 3 or 4,"
-            + " but got a matrix of size " + value[0].height + "x" + value[0].width + "!");
+        throw "Expected a square matrix of size 2, 3 or 4!";
     }
-    let l = value[0].width;
-    let f;
-    switch(l) {
-        case 2n: f = values => (gl, loc) => gl.uniformMatrix2fv(loc, false, values); break;
-        case 3n: f = values => (gl, loc) => gl.uniformMatrix3fv(loc, false, values); break;
-        case 4n: f = values => (gl, loc) => gl.uniformMatrix4fv(loc, false, values); break;
-        default: throw new Error("Expected square matrices of size 2, 3 or 4,"
-            + " but got a matrix of size " + value[0].height + "x" + value[0].width + "!");
-    }
-    let values = [];
+    const matrix_arr = [];
     for(const matrix of value) {
-        if(matrix.width !== l || matrix.height !== l) {
-            throw new Error("Expected all matrices to have the same dimensions,"
-                + " but got matrices with size " + l + "x" + l
-                + " and " + matrix.height + "x" + matrix.width + "!");
+        if(matrix.width !== matrix.height || matrix.width !== value[0].width) {
+            throw "Expected square matrices of size 2, 3 or 4!";
         }
-        values.push(...matrix.values);
+        matrix_arr.push(...matrix.values);
     }
-    obem_set_uniform(shader, name, f(values));
+    let f;
+    switch(value[0].width) {
+        case 2n: 
+            f = (gl, loc) => gl.uniformMatrix2fv(loc, false, matrix_arr); 
+            break;
+        case 3n: 
+            f = (gl, loc) => gl.uniformMatrix3fv(loc, false, matrix_arr); 
+            break;
+        case 4n: 
+            f = (gl, loc) => gl.uniformMatrix4fv(loc, false, matrix_arr); 
+            break;
+        default: throw new Error("Expected square matrices of size 2, 3 or 4!");
+    }
+    obem_set_uniform(shader, name, f);
 }
 
 function obem_allocate_texture_slot(shader, texture) {

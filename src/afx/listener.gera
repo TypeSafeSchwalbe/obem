@@ -2,7 +2,7 @@
 mod obem::afx::Listener
 
 use obem::internal::afx::Listener::*
-use obem::lav
+use obem::vec
 use std::str
 
 val LISTENER_POSITION = [0.0, 0.0, 0.0]
@@ -28,8 +28,8 @@ pub proc orientation(look_at, up) {
             |> str::fmt([up |> length() |> as_str()])
             |> panic()
     val look = LISTENER_POSITION
-        |> lav::sub(look_at)
-        |> lav::norm()
+        |> vec::sub(look_at)
+        |> vec::norm()
     internal_listener_orientation(
         look[0], look[1], look[2], up[0], up[1], up[2]
     )
